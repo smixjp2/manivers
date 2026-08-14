@@ -1,7 +1,26 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SN08P7MQRL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-SN08P7MQRL');
+</script>
+
 <title>Contact · MANIVERS</title>
+<meta property="og:type" content="website">
+<meta property="og:title" content="Contact — MANIVERS">
+<meta property="og:description" content="Une question ? Contacte Manivers par WhatsApp, téléphone ou email.">
+<meta property="og:image" content="https://manivers.vercel.app/og-image.png">
+<meta property="og:url" content="https://manivers.vercel.app/contact.html">
+<meta property="og:locale" content="fr_MA">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Contact — MANIVERS">
+<meta name="twitter:description" content="Une question ? Contacte Manivers par WhatsApp, téléphone ou email.">
+<meta name="twitter:image" content="https://manivers.vercel.app/og-image.png">
 <meta name="description" content="Contacte Manivers par WhatsApp, téléphone ou email. Basé à Casablanca, livraison partout au Maroc.">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -61,7 +80,14 @@
     font-size:13.5px; font-weight:600; box-shadow:var(--shadow-sm); transition:transform .2s, box-shadow .2s;
   }
   .nav-cta:hover{ transform:translateY(-1px); box-shadow:var(--shadow-md); }
-  @media (max-width:760px){ .nav-links{ display:none; } }
+  @media (max-width:760px){
+    .nav-links{ display:none; }
+    .nav-cta{ display:none; }
+    .account-btn span{ display:none; }
+    .account-btn{ padding:0; width:42px; justify-content:center; }
+    .logo-word{ font-size:19px; }
+    .nav-inner{ gap:8px; }
+  }
 
   /* ---- HERO ---- */
   .hero{ padding:76px 0 84px; }
@@ -497,13 +523,46 @@
   .gift-nav-link{ cursor:pointer; }
 </style>
 
+<style>
+  .offline-banner{
+    position:fixed; top:0; left:0; right:0; z-index:200;
+    background:#B3261E; color:#fff; text-align:center; padding:10px 16px;
+    font-size:13px; font-weight:600;
+    transform:translateY(-100%); transition:transform .3s ease;
+  }
+  .offline-banner.show{ transform:translateY(0); }
+</style>
+
+<style>
+  .mobile-menu-btn{
+    display:none; background:var(--card); border:1px solid var(--line); width:42px; height:42px;
+    border-radius:100px; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0;
+  }
+  @media (max-width:760px){ .mobile-menu-btn{ display:flex; } }
+  .mobile-menu-btn svg{ width:19px; height:19px; stroke:var(--ink); fill:none; stroke-width:1.8; }
+  .mobile-nav-panel{
+    display:none; flex-direction:column; background:var(--card); border-top:1px solid var(--line);
+    padding:6px 20px 14px;
+  }
+  .mobile-nav-panel.open{ display:flex; }
+  .mobile-nav-panel a{
+    padding:14px 2px; font-size:15.5px; font-weight:600; color:var(--ink);
+    border-bottom:1px solid var(--line); cursor:pointer;
+  }
+  .mobile-nav-panel a:last-child{ border-bottom:none; }
+</style>
+
 </head>
 <body>
+<div class="offline-banner" id="offlineBanner">Pas de connexion internet — certaines actions ne fonctionneront pas.</div>
 
 <div class="topbar">Livraison partout au Maroc via <b>Cathedis</b> · Paiement à la livraison</div>
 
 <nav>
   <div class="wrap nav-inner">
+    <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Menu">
+      <svg id="mobileMenuIcon" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
     <div class="logo"><div class="logo-word">manivers<span class="logo-dot">.</span></div></div>
     <div class="nav-links">
       <a href="boutique.html#categories">Catégories</a>
@@ -526,6 +585,13 @@
     </button>
     <a href="boutique.html" class="nav-cta">Voir la boutique</a>
   </div>
+  <div class="mobile-nav-panel" id="mobileNavPanel">
+    <a href="boutique.html#categories">Catégories</a>
+    <a href="boutique.html">Produits</a>
+    <a href="pourquoi.html">Pourquoi nous</a>
+    <a onclick="toggleMobileMenu(); openGiftGuide();">Guide cadeaux</a>
+    <a href="contact.html">Contact</a>
+  </div>
 </nav>
 
 
@@ -544,13 +610,13 @@
         <div class="contact-icon"><svg viewBox="0 0 24 24"><path d="M4 4l16 8-16 8V4z"/></svg></div>
         <b>WhatsApp</b>
         <p>Le moyen le plus rapide de nous joindre. On répond en général en quelques minutes.</p>
-        <a href="https://wa.me/212600000000" class="contact-link">Écrire sur WhatsApp →</a>
+        <a href="https://wa.me/212706122823" class="contact-link">Écrire sur WhatsApp →</a>
       </div>
       <div class="contact-card">
         <div class="contact-icon"><svg viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M10 18h4"/></svg></div>
         <b>Téléphone</b>
         <p>Du lundi au samedi, de 9h à 19h. Pour toute question urgente sur une livraison en cours.</p>
-        <a href="tel:+212600000000" class="contact-link">+212 6 00 00 00 00 →</a>
+        <a href="tel:+212706122823" class="contact-link">+212 706 122 823 →</a>
       </div>
       <div class="contact-card">
         <div class="contact-icon"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></div>
@@ -630,10 +696,12 @@
         <a href="contact.html">Livraison & retours</a>
         <a href="contact.html">Suivre ma commande</a>
         <a href="contact.html">FAQ</a>
+        <a href="privacy.html">Confidentialité</a>
+        <a href="terms.html">Conditions générales</a>
       </div>
       <div>
         <h4>Contact</h4>
-        <a href="https://wa.me/212600000000">WhatsApp</a>
+        <a href="https://wa.me/212706122823">WhatsApp</a>
         <a href="mailto:contact@manivers.ma">contact@manivers.ma</a>
         <a href="#">Instagram</a>
       </div>
@@ -667,7 +735,7 @@
 <div class="toast" id="toast"></div>
 
 <script>
-  const WHATSAPP_NUMBER = "212600000000";
+  const WHATSAPP_NUMBER = "212706122823";
 
   function getCart(){
     try { return JSON.parse(localStorage.getItem('manivers_cart') || '[]'); }
@@ -797,7 +865,23 @@
         <label>Mot de passe</label>
         <input type="password" id="loginPassword" placeholder="••••••••">
       </div>
+      <div style="text-align:right; margin-top:-8px; margin-bottom:14px;">
+        <span onclick="showResetForm()" style="font-size:12.5px; color:var(--muted); text-decoration:underline; cursor:pointer;">Mot de passe oublié ?</span>
+      </div>
       <button class="auth-submit" onclick="doLogin()">Se connecter</button>
+    </div>
+
+    <div id="resetForm" style="display:none;">
+      <div class="auth-title">Réinitialiser ton mot de passe</div>
+      <div class="auth-sub">On t'envoie un lien par email pour choisir un nouveau mot de passe.</div>
+      <div class="auth-field">
+        <label>Email</label>
+        <input type="email" id="resetEmail" placeholder="toi@email.com">
+      </div>
+      <button class="auth-submit" onclick="doPasswordReset()">Envoyer le lien</button>
+      <div style="text-align:center; margin-top:14px;">
+        <span onclick="switchAuthTab('login')" style="font-size:12.5px; color:var(--muted); text-decoration:underline; cursor:pointer;">Retour à la connexion</span>
+      </div>
     </div>
 
     <div id="signupForm" style="display:none;">
@@ -856,6 +940,7 @@
     document.getElementById('tabSignup').classList.toggle('active', tab === 'signup');
     document.getElementById('loginForm').style.display = tab === 'login' ? 'block' : 'none';
     document.getElementById('signupForm').style.display = tab === 'signup' ? 'block' : 'none';
+    document.getElementById('resetForm').style.display = 'none';
     hideAuthMessages();
   }
   function showAuthError(msg){
@@ -875,6 +960,47 @@
     document.getElementById('authSuccess').classList.remove('show');
   }
 
+
+  function showResetForm(){
+    document.getElementById('loginForm').style.display = 'none';
+    document.getElementById('signupForm').style.display = 'none';
+    document.getElementById('resetForm').style.display = 'block';
+    hideAuthMessages();
+  }
+  const NETWORK_ERROR_MSG = "Pas de connexion internet. Vérifie ta connexion et réessaie.";
+
+  function isNetworkError(e){
+    return e instanceof TypeError || (e && /fetch|network|Failed to fetch/i.test(e.message || ''));
+  }
+
+  async function withButtonLoading(btn, loadingText, fn){
+    const originalText = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = loadingText;
+    try {
+      await fn();
+    } finally {
+      btn.disabled = false;
+      btn.textContent = originalText;
+    }
+  }
+
+  async function doPasswordReset(){
+    const email = document.getElementById('resetEmail').value.trim();
+    if (!email) { showAuthError("Merci d'indiquer ton email."); return; }
+    const btn = document.querySelector('#resetForm .auth-submit');
+    await withButtonLoading(btn, 'Envoi en cours...', async () => {
+      try {
+        const redirectTo = window.location.origin + '/reset-password.html';
+        const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo });
+        if (error) { showAuthError(error.message); return; }
+        showAuthSuccess("Lien envoyé ! Vérifie ta boîte mail (et les spams).");
+      } catch(e) {
+        showAuthError(isNetworkError(e) ? NETWORK_ERROR_MSG : "Une erreur est survenue. Réessaie.");
+      }
+    });
+  }
+
   async function doSignup(){
     const name = document.getElementById('signupName').value.trim();
     const email = document.getElementById('signupEmail').value.trim();
@@ -883,20 +1009,43 @@
       showAuthError("Merci de remplir un email valide et un mot de passe de 6 caractères minimum.");
       return;
     }
-    const { data, error } = await sb.auth.signUp({ email, password, options: { data: { full_name: name } } });
-    if (error) { showAuthError(error.message); return; }
-    showAuthSuccess("Compte créé ! Tu peux maintenant te connecter.");
-    setTimeout(() => switchAuthTab('login'), 1400);
+    const btn = document.querySelector('#signupForm .auth-submit');
+    await withButtonLoading(btn, 'Création en cours...', async () => {
+      try {
+        const { data, error } = await sb.auth.signUp({ email, password, options: { data: { full_name: name } } });
+        if (error) { showAuthError(error.message); return; }
+        if (data.session) {
+          showAuthSuccess("Compte créé, connexion en cours...");
+          setTimeout(async () => {
+            closeAuth();
+            await onLoggedIn(data.user);
+            showToast("Bienvenue " + (name || data.user.email) + " !");
+          }, 900);
+        } else {
+          showAuthSuccess("Compte créé ! Vérifie ton email pour confirmer, puis connecte-toi.");
+          setTimeout(() => switchAuthTab('login'), 2500);
+        }
+      } catch(e) {
+        showAuthError(isNetworkError(e) ? NETWORK_ERROR_MSG : "Une erreur est survenue. Réessaie.");
+      }
+    });
   }
 
   async function doLogin(){
     const email = document.getElementById('loginEmail').value.trim();
     const password = document.getElementById('loginPassword').value;
     if (!email || !password) { showAuthError("Merci de remplir ton email et ton mot de passe."); return; }
-    const { data, error } = await sb.auth.signInWithPassword({ email, password });
-    if (error) { showAuthError(error.message); return; }
-    closeAuth();
-    await onLoggedIn(data.user);
+    const btn = document.querySelector('#loginForm .auth-submit');
+    await withButtonLoading(btn, 'Connexion en cours...', async () => {
+      try {
+        const { data, error } = await sb.auth.signInWithPassword({ email, password });
+        if (error) { showAuthError(error.message); return; }
+        closeAuth();
+        await onLoggedIn(data.user);
+      } catch(e) {
+        showAuthError(isNetworkError(e) ? NETWORK_ERROR_MSG : "Une erreur est survenue. Réessaie.");
+      }
+    });
   }
 
   async function doLogout(){
@@ -1283,6 +1432,29 @@
     document.getElementById('giftProg1').classList.remove('done');
     document.getElementById('giftProg2').classList.remove('done');
     document.getElementById('giftProg3').classList.remove('done');
+  }
+</script>
+
+<script>
+  function updateOfflineBanner(){
+    const banner = document.getElementById('offlineBanner');
+    if (!banner) return;
+    banner.classList.toggle('show', !navigator.onLine);
+  }
+  window.addEventListener('online', updateOfflineBanner);
+  window.addEventListener('offline', updateOfflineBanner);
+  document.addEventListener('DOMContentLoaded', updateOfflineBanner);
+</script>
+
+
+<script>
+  function toggleMobileMenu(){
+    const panel = document.getElementById('mobileNavPanel');
+    const icon = document.getElementById('mobileMenuIcon');
+    const isOpen = panel.classList.toggle('open');
+    icon.innerHTML = isOpen
+      ? '<path d="M6 6l12 12M18 6L6 18"/>'
+      : '<path d="M4 7h16M4 12h16M4 17h16"/>';
   }
 </script>
 
