@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MANIVERS — Tout pour lui</title>
+<meta name="description" content="Soin, montres, gadgets, sport, auto et voyage — tout ce qu'un homme utilise au quotidien, réuni au même endroit. Livraison partout au Maroc, paiement à la livraison.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1A1B1E;
+    --paper:#FAF9F6;
+    --card:#FFFFFF;
+    --muted:#6B6E75;
+    --line:#E5E3DD;
+    --copper:#B8763F;
+    --copper-dim:#F1E4D6;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{ scroll-behavior:smooth; }
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.55;
+  }
+  img,svg{max-width:100%; display:block;}
+  a{ color:inherit; text-decoration:none; }
+  .wrap{ max-width:1180px; margin:0 auto; padding:0 24px; }
+
+  /* ---- TOP BAR ---- */
+  .topbar{
+    background:var(--ink); color:#C9C6BE;
+    font-size:12.5px; text-align:center; padding:8px 16px;
+  }
+  .topbar b{ color:var(--copper); }
+
+  /* ---- NAV ---- */
+  nav{ padding:18px 0; border-bottom:1px solid var(--line); }
+  .nav-inner{ display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+  .logo{ display:flex; align-items:center; gap:10px; }
+  .logo-mark{ width:34px; height:34px; }
+  .logo-word{ font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:21px; letter-spacing:-0.01em; }
+  .nav-links{ display:flex; gap:26px; font-size:14.5px; font-weight:500; }
+  .nav-links a:hover{ color:var(--copper); }
+  .nav-cta{
+    background:var(--ink); color:#fff; padding:10px 18px; border-radius:100px;
+    font-size:13.5px; font-weight:600;
+  }
+  @media (max-width:760px){ .nav-links{ display:none; } }
+
+  /* ---- HERO ---- */
+  .hero{ padding:60px 0 70px; }
+  .hero-grid{ display:grid; grid-template-columns:1fr; gap:36px; align-items:center; }
+  @media (min-width:900px){ .hero-grid{ grid-template-columns:1.1fr 0.9fr; } }
+  .eyebrow{
+    display:inline-block; font-size:13px; font-weight:600; color:var(--copper);
+    background:var(--copper-dim); padding:7px 14px; border-radius:100px; margin-bottom:20px;
+  }
+  h1{
+    font-family:'Space Grotesk', sans-serif; font-weight:700;
+    font-size:44px; line-height:1.1; letter-spacing:-0.02em;
+  }
+  h1 .copper{ color:var(--copper); }
+  .hero p.sub{ margin-top:18px; font-size:17px; color:var(--muted); max-width:440px; }
+  .hero-ctas{ display:flex; gap:12px; margin-top:28px; flex-wrap:wrap; }
+  .btn-primary{
+    background:var(--ink); color:#fff; padding:15px 26px; border-radius:100px;
+    font-weight:600; font-size:15px;
+  }
+  .btn-secondary{
+    border:1px solid var(--line); padding:15px 26px; border-radius:100px;
+    font-weight:600; font-size:15px;
+  }
+  .hero-visual{
+    background:var(--ink); border-radius:20px; padding:40px;
+    aspect-ratio:4/3; display:flex; align-items:center; justify-content:center;
+  }
+  .hero-visual svg{ width:100%; height:100%; }
+
+  .stats-row{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:1px;
+    background:var(--line); border:1px solid var(--line); border-radius:14px; overflow:hidden;
+    margin-top:56px;
+  }
+  .stat{ background:var(--card); padding:20px 16px; text-align:center; }
+  .stat b{ display:block; font-family:'Space Grotesk', sans-serif; font-size:22px; }
+  .stat span{ font-size:12px; color:var(--muted); }
+  @media (max-width:700px){ .stats-row{ grid-template-columns:repeat(2,1fr); } }
+
+  /* ---- SECTIONS ---- */
+  section{ padding:60px 0; }
+  .section-head{ display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:32px; flex-wrap:wrap; gap:12px; }
+  .section-head h2{ font-family:'Space Grotesk', sans-serif; font-size:28px; font-weight:700; }
+  .section-head p{ color:var(--muted); font-size:14.5px; margin-top:6px; }
+  .link-more{ font-size:14px; font-weight:600; color:var(--copper); white-space:nowrap; }
+
+  /* ---- CATEGORIES ---- */
+  .cat-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:16px; }
+  @media (min-width:700px){ .cat-grid{ grid-template-columns:repeat(3,1fr); } }
+  .cat-card{
+    background:var(--card); border:1px solid var(--line); border-radius:16px;
+    padding:26px 20px; text-align:center; transition:transform .15s;
+  }
+  .cat-card:hover{ transform:translateY(-3px); border-color:var(--copper); }
+  .cat-icon{ width:38px; height:38px; margin:0 auto 14px; stroke:var(--ink); stroke-width:1.5; fill:none; }
+  .cat-card b{ display:block; font-size:15px; font-weight:600; }
+  .cat-card span{ display:block; font-size:12px; color:var(--muted); margin-top:4px; }
+
+  /* ---- PRODUCTS ---- */
+  .prod-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:18px; }
+  @media (min-width:700px){ .prod-grid{ grid-template-columns:repeat(4,1fr); } }
+  .prod-card{ background:var(--card); border:1px solid var(--line); border-radius:14px; overflow:hidden; }
+  .prod-img{
+    aspect-ratio:1/1; background:linear-gradient(135deg,#EDEAE3,#F6F4EF);
+    display:flex; align-items:center; justify-content:center; position:relative;
+  }
+  .prod-img svg{ width:44%; height:44%; stroke:var(--muted); fill:none; stroke-width:1.3; }
+  .prod-badge{
+    position:absolute; top:10px; left:10px; background:var(--copper); color:#fff;
+    font-size:11px; font-weight:700; padding:4px 9px; border-radius:100px;
+  }
+  .prod-body{ padding:14px 14px 16px; }
+  .prod-body b{ display:block; font-size:13.5px; font-weight:600; line-height:1.3; min-height:35px; }
+  .prod-price{ margin-top:8px; display:flex; align-items:baseline; gap:8px; }
+  .prod-price .now{ font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:17px; }
+  .prod-price .old{ font-size:12.5px; color:var(--muted); text-decoration:line-through; }
+
+  /* ---- WHY US ---- */
+  .why-grid{ display:grid; grid-template-columns:1fr; gap:14px; }
+  @media (min-width:700px){ .why-grid{ grid-template-columns:repeat(4,1fr); } }
+  .why-item{ display:flex; gap:14px; align-items:flex-start; }
+  .why-icon{
+    width:44px; height:44px; border-radius:12px; background:var(--copper-dim);
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .why-icon svg{ width:22px; height:22px; stroke:var(--copper); fill:none; stroke-width:1.6; }
+  .why-item b{ display:block; font-size:14.5px; font-weight:600; margin-bottom:3px; }
+  .why-item span{ font-size:13px; color:var(--muted); }
+
+  /* ---- BANNER ---- */
+  .banner{
+    background:var(--ink); color:#fff; border-radius:20px;
+    padding:44px 32px; text-align:center;
+  }
+  .banner h3{ font-family:'Space Grotesk', sans-serif; font-size:24px; font-weight:700; }
+  .banner p{ color:#B9B6AE; margin-top:10px; font-size:14.5px; }
+  .banner .btn-primary{ background:var(--copper); margin-top:20px; display:inline-block; }
+
+  /* ---- FOOTER ---- */
+  footer{ background:var(--ink); color:#C9C6BE; padding:50px 0 24px; margin-top:40px; }
+  .footer-grid{ display:grid; grid-template-columns:1fr; gap:32px; padding-bottom:30px; border-bottom:1px solid #33343A; }
+  @media (min-width:700px){ .footer-grid{ grid-template-columns:1.4fr 1fr 1fr 1fr; } }
+  .footer-grid h4{ color:#fff; font-size:13px; margin-bottom:12px; }
+  .footer-grid a{ display:block; font-size:13.5px; color:#B9B6AE; padding:5px 0; }
+  .footer-bottof{ padding-top:20px; font-size:12.5px; color:#83807A; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; }
+</style>
+</head>
+<body>
+
+<div class="topbar">Livraison partout au Maroc via <b>Cathedis</b> · Paiement à la livraison</div>
+
+<nav>
+  <div class="wrap nav-inner">
+    <div class="logo">
+      <svg class="logo-mark" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+        <rect width="40" height="40" rx="9" fill="#1A1B1E"/>
+        <circle cx="20" cy="20" r="9" fill="none" stroke="#FAF9F6" stroke-width="1.6"/>
+        <path d="M11 20 L29 20" stroke="#B8763F" stroke-width="1.6"/>
+      </svg>
+      <div class="logo-word">MANIVERS</div>
+    </div>
+    <div class="nav-links">
+      <a href="#categories">Catégories</a>
+      <a href="#produits">Produits</a>
+      <a href="#pourquoi">Pourquoi nous</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <a href="#produits" class="nav-cta">Voir la boutique</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">Nouveau au Maroc</div>
+      <h1>Tout ce qu'un homme <span class="copper">utilise vraiment</span>, au même endroit.</h1>
+      <p class="sub">Soin, montres, gadgets, sport, auto et voyage — une sélection pensée pour l'homme actif, sans le superflu.</p>
+      <div class="hero-ctas">
+        <a href="#produits" class="btn-primary">Découvrir la boutique</a>
+        <a href="#categories" class="btn-secondary">Voir les catégories</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
+        <rect x="20" y="30" width="70" height="70" rx="10" fill="none" stroke="#3A3B40" stroke-width="1.5"/>
+        <circle cx="55" cy="65" r="18" fill="none" stroke="#B8763F" stroke-width="2"/>
+        <rect x="110" y="20" width="70" height="90" rx="10" fill="none" stroke="#3A3B40" stroke-width="1.5"/>
+        <path d="M130 50 L160 50 M130 65 L160 65 M130 80 L150 80" stroke="#B8763F" stroke-width="2" stroke-linecap="round"/>
+        <rect x="30" y="115" width="140" height="30" rx="10" fill="none" stroke="#3A3B40" stroke-width="1.5"/>
+        <circle cx="55" cy="130" r="5" fill="#B8763F"/>
+        <circle cx="75" cy="130" r="5" fill="none" stroke="#3A3B40" stroke-width="1.5"/>
+        <circle cx="95" cy="130" r="5" fill="none" stroke="#3A3B40" stroke-width="1.5"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="stats-row">
+      <div class="stat"><b>+300</b><span>Références</span></div>
+      <div class="stat"><b>24h</b><span>Expédition</span></div>
+      <div class="stat"><b>4.7/5</b><span>Note clients</span></div>
+      <div class="stat"><b>100%</b><span>Paiement livraison</span></div>
+    </div>
+  </div>
+</header>
+
+<section id="categories">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2>Explorez nos rayons</h2>
+        <p>Six univers, une seule boutique.</p>
+      </div>
+      <a href="#produits" class="link-more">Toute la boutique →</a>
+    </div>
+    <div class="cat-grid">
+      <a href="#" class="cat-card">
+        <svg class="cat-icon" viewBox="0 0 24 24"><path d="M6 8V6a3 3 0 0 1 6 0v2"/><rect x="4" y="8" width="16" height="12" rx="2"/><path d="M9 12h6"/></svg>
+        <b>Soin & Grooming</b>
+        <span>Barbe, visage, rasage</span>
+      </a>
+      <a href="#" class="cat-card">
+        <svg class="cat-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><path d="M12 9v3l2 2"/></svg>
+        <b>Montres & Accessoires</b>
+        <span>Montres, bracelets, ceintures</span>
+      </a>
+      <a href="#" class="cat-card">
+        <svg class="cat-icon" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="12" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        <b>Gadgets & Bureau</b>
+        <span>EDC, accessoires tech</span>
+      </a>
+      <a href="#" class="cat-card">
+        <svg class="cat-icon" viewBox="0 0 24 24"><path d="M4 20l4-10 4 6 3-4 5 8"/><circle cx="18" cy="6" r="2"/></svg>
+        <b>Sport & Performance</b>
+        <span>Fitness, récupération</span>
+      </a>
+      <a href="#" class="cat-card">
+        <svg class="cat-icon" viewBox="0 0 24 24"><rect x="3" y="9" width="14" height="8" rx="1"/><path d="M17 12h4l2 3v2h-6"/><circle cx="7.5" cy="19" r="1.6"/><circle cx="17.5" cy="19" r="1.6"/></svg>
+        <b>Auto & Outils</b>
+        <span>Entretien, confort au volant</span>
+      </a>
+      <a href="#" class="cat-card">
+        <svg class="cat-icon" viewBox="0 0 24 24"><rect x="5" y="7" width="14" height="14" rx="2"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/></svg>
+        <b>Voyage & Mobilité</b>
+        <span>Sacs, organisation, déplacement</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="produits" style="background:var(--card); border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2>Meilleures ventes</h2>
+        <p>Les produits les plus choisis ce mois-ci.</p>
+      </div>
+      <a href="#" class="link-more">Voir tout →</a>
+    </div>
+    <div class="prod-grid">
+
+      <div class="prod-card">
+        <div class="prod-img">
+          <span class="prod-badge">-38%</span>
+          <svg viewBox="0 0 24 24"><rect x="6" y="8" width="12" height="12" rx="2"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+        </div>
+        <div class="prod-body">
+          <b>Tondeuse Barbe Pro 5-en-1 Rechargeable</b>
+          <div class="prod-price"><span class="now">249 DH</span><span class="old">399 DH</span></div>
+        </div>
+      </div>
+
+      <div class="prod-card">
+        <div class="prod-img">
+          <span class="prod-badge">-25%</span>
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><path d="M12 9v3l2 2"/></svg>
+        </div>
+        <div class="prod-body">
+          <b>Montre Chronographe Acier Noir</b>
+          <div class="prod-price"><span class="now">299 DH</span><span class="old">399 DH</span></div>
+        </div>
+      </div>
+
+      <div class="prod-card">
+        <div class="prod-img">
+          <span class="prod-badge">-30%</span>
+          <svg viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/></svg>
+        </div>
+        <div class="prod-body">
+          <b>Porte-clés Multi-outils EDC Titane</b>
+          <div class="prod-price"><span class="now">89 DH</span><span class="old">129 DH</span></div>
+        </div>
+      </div>
+
+      <div class="prod-card">
+        <div class="prod-img">
+          <span class="prod-badge">-20%</span>
+          <svg viewBox="0 0 24 24"><rect x="3" y="9" width="14" height="8" rx="1"/><path d="M17 12h4l2 3v2h-6"/></svg>
+        </div>
+        <div class="prod-body">
+          <b>Booster Batterie Voiture Multifonction</b>
+          <div class="prod-price"><span class="now">349 DH</span><span class="old">449 DH</span></div>
+        </div>
+      </div>
+
+      <div class="prod-card">
+        <div class="prod-img">
+          <span class="prod-badge">-15%</span>
+          <svg viewBox="0 0 24 24"><path d="M4 20l4-10 4 6 3-4 5 8"/><circle cx="18" cy="6" r="2"/></svg>
+        </div>
+        <div class="prod-body">
+          <b>Sangles de Résistance Set Complet</b>
+          <div class="prod-price"><span class="now">99 DH</span><span class="old">119 DH</span></div>
+        </div>
+      </div>
+
+      <div class="prod-card">
+        <div class="prod-img">
+          <span class="prod-badge">-33%</span>
+          <svg viewBox="0 0 24 24"><rect x="5" y="7" width="14" height="14" rx="2"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/></svg>
+        </div>
+        <div class="prod-body">
+          <b>Trousse de Toilette Voyage Compacte</b>
+          <div class="prod-price"><span class="now">79 DH</span><span class="old">119 DH</span></div>
+        </div>
+      </div>
+
+      <div class="prod-card">
+        <div class="prod-img">
+          <span class="prod-badge">-28%</span>
+          <svg viewBox="0 0 24 24"><rect x="6" y="4" width="12" height="16" rx="2"/><path d="M10 8h4M10 12h4"/></svg>
+        </div>
+        <div class="prod-body">
+          <b>Portefeuille Cuir Slim Anti-RFID</b>
+          <div class="prod-price"><span class="now">129 DH</span><span class="old">179 DH</span></div>
+        </div>
+      </div>
+
+      <div class="prod-card">
+        <div class="prod-img">
+          <span class="prod-badge">-22%</span>
+          <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="12" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        </div>
+        <div class="prod-body">
+          <b>Support Bureau Ajustable pour Téléphone</b>
+          <div class="prod-price"><span class="now">59 DH</span><span class="old">75 DH</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="pourquoi">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2>Pourquoi Manivers</h2>
+      </div>
+    </div>
+    <div class="why-grid">
+      <div class="why-item">
+        <div class="why-icon"><svg viewBox="0 0 24 24"><rect x="2" y="9" width="12" height="8"/><path d="M14 12h4l3 3v2h-7z"/><circle cx="6.5" cy="18.5" r="1.6"/><circle cx="17" cy="18.5" r="1.6"/></svg></div>
+        <div><b>Livraison rapide</b><span>Partout au Maroc, sous 24-48h</span></div>
+      </div>
+      <div class="why-item">
+        <div class="why-icon"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="2.6"/></svg></div>
+        <div><b>Paiement à la livraison</b><span>Tu payes à la réception, sans risque</span></div>
+      </div>
+      <div class="why-icon-wrap"></div>
+      <div class="why-item">
+        <div class="why-icon"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-3-6.2"/><path d="M20 3v5h-5"/></svg></div>
+        <div><b>Retours faciles</b><span>7 jours pour changer d'avis</span></div>
+      </div>
+      <div class="why-item">
+        <div class="why-icon"><svg viewBox="0 0 24 24"><path d="M12 3l2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5z"/></svg></div>
+        <div><b>Sélection soignée</b><span>Des produits testés, pas du hasard</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="banner">
+      <h3>Reçois nos nouveautés avant tout le monde</h3>
+      <p>Nouveaux produits, offres de lancement — directement sur WhatsApp.</p>
+      <a href="https://wa.me/212600000000" class="btn-primary">Rejoindre sur WhatsApp →</a>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="logo" style="margin-bottom:14px;">
+          <svg class="logo-mark" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+            <rect width="40" height="40" rx="9" fill="#FAF9F6"/>
+            <circle cx="20" cy="20" r="9" fill="none" stroke="#1A1B1E" stroke-width="1.6"/>
+            <path d="M11 20 L29 20" stroke="#B8763F" stroke-width="1.6"/>
+          </svg>
+          <div class="logo-word" style="color:#fff;">MANIVERS</div>
+        </div>
+        <p style="font-size:13.5px; max-width:280px; color:#9A978F;">Tout ce qu'un homme utilise vraiment, réuni au même endroit. Livraison partout au Maroc.</p>
+      </div>
+      <div>
+        <h4>Boutique</h4>
+        <a href="#categories">Catégories</a>
+        <a href="#produits">Produits</a>
+        <a href="#">Meilleures ventes</a>
+      </div>
+      <div>
+        <h4>Aide</h4>
+        <a href="#">Livraison & retours</a>
+        <a href="#">Suivre ma commande</a>
+        <a href="#">FAQ</a>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <a href="https://wa.me/212600000000">WhatsApp</a>
+        <a href="mailto:contact@manivers.ma">contact@manivers.ma</a>
+        <a href="#">Instagram</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Manivers — Casablanca, Maroc</span>
+      <span>Paiement à la livraison · Livraison via Cathedis</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
