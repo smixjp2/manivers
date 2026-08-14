@@ -215,6 +215,62 @@
   .breadcrumb{ font-size:13px; color:var(--muted); margin-bottom:14px; }
   .breadcrumb a:hover{ color:var(--copper); }
 
+  .story-section{ display:grid; grid-template-columns:1fr; gap:32px; }
+  @media (min-width:900px){ .story-section{ grid-template-columns:0.9fr 1.1fr; align-items:start; } }
+  .story-visual{
+    background:linear-gradient(160deg, #1E1F24, var(--ink)); border-radius:24px; padding:40px 32px;
+    box-shadow:var(--shadow-lg); position:relative; overflow:hidden; min-height:280px;
+    display:flex; flex-direction:column; justify-content:flex-end;
+  }
+  .story-visual::after{ content:''; position:absolute; inset:0; background:linear-gradient(160deg, rgba(168,99,46,0.15), transparent 55%); }
+  .story-year{ font-family:'Fraunces', serif; font-weight:600; font-size:56px; color:#fff; position:relative; z-index:1; }
+  .story-year span{ display:block; font-family:'Inter', sans-serif; font-weight:600; font-size:12px; letter-spacing:0.05em; text-transform:uppercase; color:var(--copper); margin-bottom:8px; }
+  .story-place{ font-size:13.5px; color:#B9B6AE; margin-top:10px; position:relative; z-index:1; }
+
+  .story-text .eyebrow{ margin-bottom:16px; }
+  .story-text h2{ font-family:'Fraunces', serif; font-weight:600; font-size:28px; line-height:1.25; letter-spacing:-0.01em; margin-bottom:20px; }
+  .story-text p{ font-size:15.5px; color:#3E4148; line-height:1.75; margin-bottom:16px; }
+  .story-text p:last-child{ margin-bottom:0; }
+  .story-signature{ margin-top:24px; font-family:'Fraunces', serif; font-style:italic; font-size:15px; color:var(--muted); }
+
+  .values-grid{ display:grid; grid-template-columns:1fr; gap:16px; margin-top:16px; }
+  @media (min-width:700px){ .values-grid{ grid-template-columns:repeat(3,1fr); } }
+  .value-card{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding:24px; box-shadow:var(--shadow-sm); }
+  .value-num{ font-family:'Fraunces', serif; font-weight:600; font-size:13px; color:var(--copper); margin-bottom:12px; }
+  .value-card b{ display:block; font-family:'Space Grotesk', sans-serif; font-size:16px; margin-bottom:8px; }
+  .value-card p{ font-size:13.5px; color:var(--muted); line-height:1.6; }
+
+  /* ---- PULL QUOTE ---- */
+  .pull-quote{
+    font-family:'Fraunces', serif; font-style:italic; font-weight:500; font-size:26px; line-height:1.4;
+    color:var(--ink); max-width:680px; margin:0 auto; text-align:center; padding:0 20px;
+  }
+  .pull-quote::before{ content:'"'; color:var(--copper); }
+  .pull-quote::after{ content:'"'; color:var(--copper); }
+  .quote-attr{ text-align:center; font-size:12.5px; color:var(--muted); margin-top:16px; letter-spacing:0.02em; }
+
+  /* ---- CHAPTERS ---- */
+  .chapter{ display:grid; grid-template-columns:1fr; gap:18px; padding:36px 0; border-bottom:1px solid var(--line); }
+  .chapter:last-child{ border-bottom:none; }
+  @media (min-width:800px){ .chapter{ grid-template-columns:140px 1fr; gap:40px; } }
+  .chapter-marker{ display:flex; align-items:flex-start; gap:14px; }
+  @media (min-width:800px){ .chapter-marker{ flex-direction:column; gap:8px; } }
+  .chapter-num{ font-family:'Fraunces', serif; font-weight:600; font-size:15px; color:var(--copper); }
+  .chapter-label{ font-size:11px; letter-spacing:0.05em; text-transform:uppercase; color:var(--muted); }
+  .chapter-body h3{ font-family:'Space Grotesk', sans-serif; font-size:21px; font-weight:700; letter-spacing:-0.01em; margin-bottom:14px; }
+  .chapter-body p{ font-size:15px; color:#3E4148; line-height:1.75; margin-bottom:12px; }
+  .chapter-body p:last-child{ margin-bottom:0; }
+
+  /* ---- TIMELINE ---- */
+  .timeline{ position:relative; padding-left:28px; }
+  .timeline::before{ content:''; position:absolute; left:6px; top:6px; bottom:6px; width:1px; background:var(--line); }
+  .timeline-item{ position:relative; padding-bottom:32px; }
+  .timeline-item:last-child{ padding-bottom:0; }
+  .timeline-dot{ position:absolute; left:-28px; top:3px; width:13px; height:13px; border-radius:50%; background:var(--copper); border:3px solid var(--paper); box-shadow:0 0 0 1px var(--copper); }
+  .timeline-date{ font-family:'Inter', sans-serif; font-size:11px; color:var(--copper); font-weight:700; letter-spacing:0.05em; text-transform:uppercase; }
+  .timeline-item b{ display:block; font-family:'Space Grotesk', sans-serif; font-size:16px; margin:4px 0 4px; }
+  .timeline-item span{ font-size:13.5px; color:var(--muted); line-height:1.6; display:block; }
+
   /* ---- CONTACT ---- */
   .contact-grid{ display:grid; grid-template-columns:1fr; gap:18px; }
   @media (min-width:700px){ .contact-grid{ grid-template-columns:repeat(3,1fr); } }
@@ -535,16 +591,126 @@
 <section class="page-head">
   <div class="wrap">
     <div class="breadcrumb"><a href="index.html">Accueil</a> / Pourquoi nous</div>
-    <h1>Pourquoi choisir Manivers</h1>
-    <p>On ne vend pas tout ce qui existe. On vend ce qu'un homme utilise vraiment, avec une expérience d'achat sans friction.</p>
+    <h1>Notre histoire</h1>
+    <p>Pas un discours de marque. Ce qui s'est vraiment passé avant que Manivers existe.</p>
   </div>
 </section>
 
-<section style="padding-top:8px;">
+<section style="padding-top:8px; padding-bottom:8px;">
   <div class="wrap">
-    <div class="pain-card">
-      <h3>La plupart des boutiques en ligne au Maroc vendent au hasard : beaucoup de références, peu de sélection réelle.</h3>
-      <p>Manivers fait l'inverse : une sélection resserrée, testée, pensée pour l'homme actif · pas un catalogue générique de plus.</p>
+    <div class="pull-quote">On a arrêté de chercher des cadeaux pour les hommes de notre entourage. On a commencé à en fabriquer la solution.</div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section style="padding-top:0;">
+  <div class="wrap">
+
+    <div class="chapter">
+      <div class="chapter-marker">
+        <div class="chapter-num">01</div>
+        <div class="chapter-label">Le déclic</div>
+      </div>
+      <div class="chapter-body">
+        <h3>Trois anniversaires, trois cadeaux ratés</h3>
+        <p>En décembre 2025, on a cherché un cadeau pour l'anniversaire d'un ami à Casablanca. Un mois plus tard, pour un collègue. Puis pour un frère. À chaque fois, le même parcours : Jumia pour comparer des prix sans logique, Instagram pour tomber sur des boutiques qui ferment leurs commentaires, Avito pour du matériel d'occasion douteux.</p>
+        <p>Aucune de ces trois recherches n'a abouti à un achat satisfaisant. On a fini par offrir un bon d'achat les trois fois. Ce n'est pas un cadeau, c'est un aveu d'échec.</p>
+      </div>
+    </div>
+
+    <div class="chapter">
+      <div class="chapter-marker">
+        <div class="chapter-num">02</div>
+        <div class="chapter-label">La décision</div>
+      </div>
+      <div class="chapter-body">
+        <h3>Arrêter de chercher, commencer à trier</h3>
+        <p>Le constat n'était pas qu'il manquait des produits au Maroc. Il y en a des milliers. Le problème, c'est qu'aucune boutique ne faisait le travail de tri à la place du client. Tout est mélangé : l'utile et le gadget, le solide et le jetable.</p>
+        <p>On a décidé de tester nous-mêmes chaque catégorie avant de la mettre en ligne : commander plusieurs références du même type de produit, les comparer, ne garder que celle qu'on rachèterait. Six catégories ont survécu à ce tri : soin, montres, gadgets, sport, auto, voyage.</p>
+      </div>
+    </div>
+
+    <div class="chapter">
+      <div class="chapter-marker">
+        <div class="chapter-num">03</div>
+        <div class="chapter-label">Aujourd'hui</div>
+      </div>
+      <div class="chapter-body">
+        <h3>Un catalogue volontairement court</h3>
+        <p>Manivers ouvre avec 12 produits, pas 200. C'est un choix, pas une contrainte. Chaque référence ajoutée au catalogue passe par le même filtre que les trois premières : est-ce qu'on l'offrirait à quelqu'un qu'on aime, sans hésiter ?</p>
+        <p>Le catalogue grandira. Mais chaque ajout suivra la même règle que celle qui a lancé le projet.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section style="padding-top:0;">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2>2026, mois par mois</h2>
+        <p>Comment on est passé d'une frustration à une boutique en ligne.</p>
+      </div>
+    </div>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">Janvier</div>
+        <b>Le constat</b>
+        <span>Trois recherches de cadeaux infructueuses en trois mois. L'idée d'une sélection resserrée prend forme.</span>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">Mars – Mai</div>
+        <b>Le tri</b>
+        <span>Test de dizaines de produits dans les six catégories retenues. La plupart sont écartés.</span>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">Juillet</div>
+        <b>La construction</b>
+        <span>Le site, le paiement à la livraison, le suivi de commande : on assemble la boutique autour des 12 produits retenus.</span>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">Août</div>
+        <b>Le lancement</b>
+        <span>Manivers ouvre à Casablanca, avec l'idée de grandir produit par produit plutôt que catalogue entier par catalogue entier.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section style="padding-top:0;">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2>Ce qui nous guide</h2>
+        <p>Trois principes simples, qu'on essaie de tenir à chaque commande.</p>
+      </div>
+    </div>
+    <div class="values-grid">
+      <div class="value-card">
+        <div class="value-num">01</div>
+        <b>Sélection avant quantité</b>
+        <p>On préfère 12 produits qu'on a vérifiés à 200 qu'on a juste ajoutés au catalogue.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-num">02</div>
+        <b>Aucune friction à l'achat</b>
+        <p>Paiement à la livraison, pas de compte obligatoire pour commander, réponse rapide sur WhatsApp.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-num">03</div>
+        <b>On grandit avec nos clients</b>
+        <p>Chaque retour, bon ou mauvais, change ce qu'on vend la semaine suivante.</p>
+      </div>
     </div>
   </div>
 </section>

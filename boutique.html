@@ -206,6 +206,26 @@
   }
   .filter-tab:hover{ border-color:var(--copper); }
   .filter-tab.active{ background:var(--ink); color:#fff; border-color:var(--ink); }
+  .filter-tab{ display:inline-flex; align-items:center; gap:6px; }
+  .filter-count{ font-size:11px; opacity:0.65; }
+  .shop-toolbar{
+    position:sticky; top:78px; z-index:30; background:var(--paper); padding:14px 0 18px;
+    border-bottom:1px solid var(--line); margin-bottom:28px;
+  }
+  .shop-toolbar-inner{ display:flex; align-items:flex-start; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+  .shop-right{ display:flex; align-items:center; gap:14px; flex-shrink:0; padding-top:11px; }
+  .results-count{ font-size:13px; color:var(--muted); white-space:nowrap; }
+  .sort-select{
+    font-family:inherit; font-size:13px; font-weight:600; color:var(--ink);
+    background:var(--card); border:1px solid var(--line); border-radius:100px;
+    padding:9px 32px 9px 16px; cursor:pointer; appearance:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236B6E75' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat:no-repeat; background-position:right 12px center; background-size:14px;
+  }
+  .prod-cat-chip{
+    position:absolute; bottom:11px; left:11px; background:rgba(255,255,255,0.92); color:var(--muted);
+    font-size:10px; font-weight:600; padding:4px 9px; border-radius:100px; letter-spacing:0.02em;
+  }
   .page-head{ padding:44px 0 12px; }
   .page-head h1{ font-size:36px; }
   .page-head p{ color:var(--muted); margin-top:10px; font-size:15.5px; }
@@ -539,21 +559,34 @@
 
 <section id="produits" style="padding-top:8px;">
   <div class="wrap">
-    <div class="filter-tabs">
-      <button class="filter-tab active" data-filter="all">Tout</button>
-      <button class="filter-tab" data-filter="soin">Soin & Grooming</button>
-      <button class="filter-tab" data-filter="montres">Montres & Accessoires</button>
-      <button class="filter-tab" data-filter="gadgets">Gadgets & Bureau</button>
-      <button class="filter-tab" data-filter="sport">Sport & Performance</button>
-      <button class="filter-tab" data-filter="auto">Auto & Outils</button>
-      <button class="filter-tab" data-filter="voyage">Voyage & Mobilité</button>
+    <div class="shop-toolbar">
+      <div class="shop-toolbar-inner">
+        <div class="filter-tabs">
+          <button class="filter-tab active" data-filter="all">Tout <span class="filter-count">(12)</span></button>
+          <button class="filter-tab" data-filter="soin">Soin & Grooming <span class="filter-count">(2)</span></button>
+          <button class="filter-tab" data-filter="montres">Montres & Accessoires <span class="filter-count">(2)</span></button>
+          <button class="filter-tab" data-filter="gadgets">Gadgets & Bureau <span class="filter-count">(2)</span></button>
+          <button class="filter-tab" data-filter="sport">Sport & Performance <span class="filter-count">(2)</span></button>
+          <button class="filter-tab" data-filter="auto">Auto & Outils <span class="filter-count">(2)</span></button>
+          <button class="filter-tab" data-filter="voyage">Voyage & Mobilité <span class="filter-count">(2)</span></button>
+        </div>
+        <div class="shop-right">
+          <span class="results-count" id="resultsCount">12 produits</span>
+          <select class="sort-select" id="sortSelect" onchange="sortProducts(this.value)">
+            <option value="default">Trier : Pertinence</option>
+            <option value="price-asc">Prix croissant</option>
+            <option value="price-desc">Prix décroissant</option>
+            <option value="discount">Meilleures réductions</option>
+          </select>
+        </div>
+      </div>
     </div>
     <div class="prod-grid" id="prodGrid">
       <div class="prod-card" data-cat="soin">
         <div class="prod-img"><button class="wishlist-btn" data-id="p1" onclick="event.stopPropagation(); toggleWishlist('p1', 'Tondeuse Barbe Pro 5-en-1 Rechargeable', 249, this)"><svg viewBox="0 0 24 24"><path d="M12 21s-8-4.6-8-11a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6.4-8 11-8 11z"/></svg></button>
           <span class="prod-badge">-38%</span>
           <svg viewBox="0 0 24 24"><rect x="6" y="8" width="12" height="12" rx="2"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
-        </div>
+        <span class="prod-cat-chip">Soin</span></div>
         <div class="prod-body">
           <b>Tondeuse Barbe Pro 5-en-1 Rechargeable</b>
           <div class="prod-price"><span class="now">249 DH</span><span class="old">399 DH</span></div>
@@ -564,7 +597,7 @@
         <div class="prod-img"><button class="wishlist-btn" data-id="p2" onclick="event.stopPropagation(); toggleWishlist('p2', 'Montre Chronographe Acier Noir', 299, this)"><svg viewBox="0 0 24 24"><path d="M12 21s-8-4.6-8-11a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6.4-8 11-8 11z"/></svg></button>
           <span class="prod-badge">-25%</span>
           <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><path d="M12 9v3l2 2"/></svg>
-        </div>
+        <span class="prod-cat-chip">Montres</span></div>
         <div class="prod-body">
           <b>Montre Chronographe Acier Noir</b>
           <div class="prod-price"><span class="now">299 DH</span><span class="old">399 DH</span></div>
@@ -575,7 +608,7 @@
         <div class="prod-img"><button class="wishlist-btn" data-id="p3" onclick="event.stopPropagation(); toggleWishlist('p3', 'Porte-clés Multi-outils EDC Titane', 89, this)"><svg viewBox="0 0 24 24"><path d="M12 21s-8-4.6-8-11a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6.4-8 11-8 11z"/></svg></button>
           <span class="prod-badge">-30%</span>
           <svg viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/></svg>
-        </div>
+        <span class="prod-cat-chip">Gadgets</span></div>
         <div class="prod-body">
           <b>Porte-clés Multi-outils EDC Titane</b>
           <div class="prod-price"><span class="now">89 DH</span><span class="old">129 DH</span></div>
@@ -586,7 +619,7 @@
         <div class="prod-img"><button class="wishlist-btn" data-id="p4" onclick="event.stopPropagation(); toggleWishlist('p4', 'Booster Batterie Voiture Multifonction', 349, this)"><svg viewBox="0 0 24 24"><path d="M12 21s-8-4.6-8-11a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6.4-8 11-8 11z"/></svg></button>
           <span class="prod-badge">-20%</span>
           <svg viewBox="0 0 24 24"><rect x="3" y="9" width="14" height="8" rx="1"/><path d="M17 12h4l2 3v2h-6"/></svg>
-        </div>
+        <span class="prod-cat-chip">Auto</span></div>
         <div class="prod-body">
           <b>Booster Batterie Voiture Multifonction</b>
           <div class="prod-price"><span class="now">349 DH</span><span class="old">449 DH</span></div>
@@ -597,7 +630,7 @@
         <div class="prod-img"><button class="wishlist-btn" data-id="p5" onclick="event.stopPropagation(); toggleWishlist('p5', 'Sangles de Résistance Set Complet', 99, this)"><svg viewBox="0 0 24 24"><path d="M12 21s-8-4.6-8-11a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6.4-8 11-8 11z"/></svg></button>
           <span class="prod-badge">-15%</span>
           <svg viewBox="0 0 24 24"><path d="M4 20l4-10 4 6 3-4 5 8"/><circle cx="18" cy="6" r="2"/></svg>
-        </div>
+        <span class="prod-cat-chip">Sport</span></div>
         <div class="prod-body">
           <b>Sangles de Résistance Set Complet</b>
           <div class="prod-price"><span class="now">99 DH</span><span class="old">119 DH</span></div>
@@ -608,7 +641,7 @@
         <div class="prod-img"><button class="wishlist-btn" data-id="p6" onclick="event.stopPropagation(); toggleWishlist('p6', 'Trousse de Toilette Voyage Compacte', 79, this)"><svg viewBox="0 0 24 24"><path d="M12 21s-8-4.6-8-11a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6.4-8 11-8 11z"/></svg></button>
           <span class="prod-badge">-33%</span>
           <svg viewBox="0 0 24 24"><rect x="5" y="7" width="14" height="14" rx="2"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/></svg>
-        </div>
+        <span class="prod-cat-chip">Voyage</span></div>
         <div class="prod-body">
           <b>Trousse de Toilette Voyage Compacte</b>
           <div class="prod-price"><span class="now">79 DH</span><span class="old">119 DH</span></div>
@@ -619,7 +652,7 @@
         <div class="prod-img"><button class="wishlist-btn" data-id="p7" onclick="event.stopPropagation(); toggleWishlist('p7', 'Portefeuille Cuir Slim Anti-RFID', 129, this)"><svg viewBox="0 0 24 24"><path d="M12 21s-8-4.6-8-11a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6.4-8 11-8 11z"/></svg></button>
           <span class="prod-badge">-28%</span>
           <svg viewBox="0 0 24 24"><rect x="6" y="4" width="12" height="16" rx="2"/><path d="M10 8h4M10 12h4"/></svg>
-        </div>
+        <span class="prod-cat-chip">Montres</span></div>
         <div class="prod-body">
           <b>Portefeuille Cuir Slim Anti-RFID</b>
           <div class="prod-price"><span class="now">129 DH</span><span class="old">179 DH</span></div>
@@ -630,7 +663,7 @@
         <div class="prod-img"><button class="wishlist-btn" data-id="p8" onclick="event.stopPropagation(); toggleWishlist('p8', 'Support Bureau Ajustable pour Téléphone', 59, this)"><svg viewBox="0 0 24 24"><path d="M12 21s-8-4.6-8-11a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6.4-8 11-8 11z"/></svg></button>
           <span class="prod-badge">-22%</span>
           <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="12" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-        </div>
+        <span class="prod-cat-chip">Gadgets</span></div>
         <div class="prod-body">
           <b>Support Bureau Ajustable pour Téléphone</b>
           <div class="prod-price"><span class="now">59 DH</span><span class="old">75 DH</span></div>
@@ -641,7 +674,7 @@
         <div class="prod-img"><button class="wishlist-btn" data-id="p9" onclick="event.stopPropagation(); toggleWishlist('p9', 'Kit Soin Visage Complet Homme', 159, this)"><svg viewBox="0 0 24 24"><path d="M12 21s-8-4.6-8-11a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6.4-8 11-8 11z"/></svg></button>
           <span class="prod-badge">-18%</span>
           <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M9 12h6M12 9v6"/></svg>
-        </div>
+        <span class="prod-cat-chip">Soin</span></div>
         <div class="prod-body">
           <b>Kit Soin Visage Complet Homme</b>
           <div class="prod-price"><span class="now">159 DH</span><span class="old">195 DH</span></div>
@@ -652,7 +685,7 @@
         <div class="prod-img"><button class="wishlist-btn" data-id="p10" onclick="event.stopPropagation(); toggleWishlist('p10', 'Haltères Ajustables Paire 2x5kg', 279, this)"><svg viewBox="0 0 24 24"><path d="M12 21s-8-4.6-8-11a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6.4-8 11-8 11z"/></svg></button>
           <span class="prod-badge">-24%</span>
           <svg viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="6" rx="2"/><path d="M2 13h2M20 13h2"/></svg>
-        </div>
+        <span class="prod-cat-chip">Sport</span></div>
         <div class="prod-body">
           <b>Haltères Ajustables Paire 2x5kg</b>
           <div class="prod-price"><span class="now">279 DH</span><span class="old">369 DH</span></div>
@@ -663,7 +696,7 @@
         <div class="prod-img"><button class="wishlist-btn" data-id="p11" onclick="event.stopPropagation(); toggleWishlist('p11', 'Housse Sièges Auto Universelle', 199, this)"><svg viewBox="0 0 24 24"><path d="M12 21s-8-4.6-8-11a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6.4-8 11-8 11z"/></svg></button>
           <span class="prod-badge">-19%</span>
           <svg viewBox="0 0 24 24"><rect x="4" y="7" width="16" height="10" rx="2"/><circle cx="8" cy="17" r="1.6"/><circle cx="16" cy="17" r="1.6"/></svg>
-        </div>
+        <span class="prod-cat-chip">Auto</span></div>
         <div class="prod-body">
           <b>Housse Sièges Auto Universelle</b>
           <div class="prod-price"><span class="now">199 DH</span><span class="old">249 DH</span></div>
@@ -674,7 +707,7 @@
         <div class="prod-img"><button class="wishlist-btn" data-id="p12" onclick="event.stopPropagation(); toggleWishlist('p12', 'Sac à Dos Voyage 30L Résistant à l\'Eau', 349, this)"><svg viewBox="0 0 24 24"><path d="M12 21s-8-4.6-8-11a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6.4-8 11-8 11z"/></svg></button>
           <span class="prod-badge">-27%</span>
           <svg viewBox="0 0 24 24"><path d="M4 10h16l-2 9H6z"/><path d="M9 10V6a3 3 0 0 1 6 0v4"/></svg>
-        </div>
+        <span class="prod-cat-chip">Voyage</span></div>
         <div class="prod-body">
           <b>Sac à Dos Voyage 30L Résistant à l'Eau</b>
           <div class="prod-price"><span class="now">349 DH</span><span class="old">479 DH</span></div>
@@ -721,6 +754,14 @@
 <script>
   const tabs = document.querySelectorAll('.filter-tab');
   const cards = document.querySelectorAll('#prodGrid .prod-card');
+  const prodGrid = document.getElementById('prodGrid');
+  const resultsCount = document.getElementById('resultsCount');
+
+  function updateResultsCount(){
+    const visible = Array.from(cards).filter(c => c.style.display !== 'none').length;
+    resultsCount.textContent = visible + (visible > 1 ? ' produits' : ' produit');
+  }
+
   tabs.forEach(tab => {
     tab.addEventListener('click', () => {
       tabs.forEach(t => t.classList.remove('active'));
@@ -730,11 +771,31 @@
         const cat = card.getAttribute('data-cat');
         card.style.display = (filter === 'all' || cat === filter) ? '' : 'none';
       });
+      updateResultsCount();
     });
   });
 
+  function getPrice(card){
+    const now = card.querySelector('.prod-price .now');
+    return now ? parseInt(now.textContent.replace(/\D/g,'')) : 0;
+  }
+  function getDiscount(card){
+    const badge = card.querySelector('.prod-badge');
+    return badge ? parseInt(badge.textContent.replace(/\D/g,'')) : 0;
+  }
+  function sortProducts(mode){
+    const arr = Array.from(cards);
+    if (mode === 'price-asc') arr.sort((a,b) => getPrice(a) - getPrice(b));
+    else if (mode === 'price-desc') arr.sort((a,b) => getPrice(b) - getPrice(a));
+    else if (mode === 'discount') arr.sort((a,b) => getDiscount(b) - getDiscount(a));
+    else arr.sort((a,b) => (a.dataset.order||0) - (b.dataset.order||0));
+    arr.forEach(card => prodGrid.appendChild(card));
+  }
+  cards.forEach((card, i) => card.dataset.order = i);
+
   // Auto-select filter if URL has a category hash (e.g. boutique.html#montres)
   window.addEventListener('DOMContentLoaded', () => {
+    updateResultsCount();
     const hash = window.location.hash.replace('#', '');
     const validCats = ['soin','montres','gadgets','sport','auto','voyage'];
     if (validCats.includes(hash)) {
