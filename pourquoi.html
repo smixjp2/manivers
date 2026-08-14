@@ -1199,26 +1199,35 @@
 <div class="gift-modal" id="giftModal">
   <button class="gift-close" onclick="closeGiftGuide()"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
 
-  <div class="gift-progress"><span id="giftProg1"></span><span id="giftProg2"></span></div>
+  <div class="gift-progress"><span id="giftProg1"></span><span id="giftProg2"></span><span id="giftProg3"></span></div>
 
   <div class="gift-step active" id="giftStep1">
     <div class="gift-title">C'est pour qui ?</div>
-    <div class="gift-sub">Étape 1 sur 2</div>
+    <div class="gift-sub">Étape 1 sur 3</div>
     <div class="gift-options">
-      <button class="gift-option" onclick="giftAnswer('who','actif')">Un homme actif, plutôt sportif</button>
-      <button class="gift-option" onclick="giftAnswer('who','soigne')">Quelqu'un qui prend soin de lui</button>
-      <button class="gift-option" onclick="giftAnswer('who','pratique')">Un homme pratique, qui aime les gadgets</button>
-      <button class="gift-option" onclick="giftAnswer('who','voyageur')">Un voyageur ou conducteur</button>
+      <button class="gift-option" onclick="giftAnswerWho('sport')">Un homme actif, plutôt sportif</button>
+      <button class="gift-option" onclick="giftAnswerWho('soin')">Quelqu'un qui prend soin de lui</button>
+      <button class="gift-option" onclick="giftAnswerWho('montres')">Un homme élégant, qui soigne son style</button>
+      <button class="gift-option" onclick="giftAnswerWho('gadgets')">Un homme pratique, qui aime les gadgets</button>
+      <button class="gift-option" onclick="giftAnswerWho('auto')">Un conducteur, toujours au volant</button>
+      <button class="gift-option" onclick="giftAnswerWho('voyage')">Un voyageur, souvent en déplacement</button>
     </div>
   </div>
 
   <div class="gift-step" id="giftStep2">
-    <div class="gift-title">Quel budget ?</div>
-    <div class="gift-sub">Étape 2 sur 2</div>
+    <div class="gift-title" id="giftStep2Title">·</div>
+    <div class="gift-sub">Étape 2 sur 3</div>
+    <div class="gift-options" id="giftDynamicOptions"></div>
+  </div>
+
+  <div class="gift-step" id="giftStep3">
+    <div class="gift-title">Pour quelle occasion ?</div>
+    <div class="gift-sub">Étape 3 sur 3</div>
     <div class="gift-options">
-      <button class="gift-option" onclick="giftAnswer('budget','petit')">Moins de 150 DH</button>
-      <button class="gift-option" onclick="giftAnswer('budget','moyen')">150 - 300 DH</button>
-      <button class="gift-option" onclick="giftAnswer('budget','grand')">300 DH et plus</button>
+      <button class="gift-option" onclick="giftAnswerOccasion('anniversaire')">Un anniversaire</button>
+      <button class="gift-option" onclick="giftAnswerOccasion('remerciement')">Pour le remercier</button>
+      <button class="gift-option" onclick="giftAnswerOccasion('plaisir')">Sans occasion, juste pour lui faire plaisir</button>
+      <button class="gift-option" onclick="giftAnswerOccasion('entreprise')">Un cadeau professionnel</button>
     </div>
   </div>
 
@@ -1226,8 +1235,12 @@
     <div class="gift-title">On a trouvé pour toi</div>
     <div class="gift-result-card">
       <b id="giftResultTitle">·</b>
+      <div id="giftResultPrice" style="font-family:'Fraunces', serif; font-weight:600; font-size:22px; margin-top:8px;">·</div>
       <span id="giftResultDesc">·</span>
-      <a href="#" id="giftResultLink">Voir la sélection →</a>
+      <div style="display:flex; gap:10px; justify-content:center; margin-top:16px; flex-wrap:wrap;">
+        <button id="giftResultAddBtn" onclick="giftAddToCart()" style="background:var(--copper); color:#fff; border:none; padding:12px 22px; border-radius:100px; font-size:13.5px; font-weight:600; cursor:pointer;">Ajouter au panier</button>
+        <a href="#" id="giftResultLink" style="border:1px solid rgba(255,255,255,0.3); color:#fff; padding:12px 22px; border-radius:100px; font-size:13.5px; font-weight:600;">Voir la catégorie →</a>
+      </div>
     </div>
     <button class="gift-restart" onclick="restartGiftGuide()">Recommencer</button>
   </div>
@@ -1337,8 +1350,55 @@
   }
   setTimeout(() => openNewsletter(false), 6000);
 
-  /* ---- GIFT GUIDE ---- */
-  let giftAnswers = {};
+      /* ---- GIFT GUIDE ---- */
+  const giftProducts = {
+    p1:  { name:"Tondeuse Barbe Pro 5-en-1 Rechargeable", price:249, cat:'soin' },
+    p2:  { name:"Montre Chronographe Acier Noir", price:299, cat:'montres' },
+    p3:  { name:"Porte-clés Multi-outils EDC Titane", price:89, cat:'gadgets' },
+    p4:  { name:"Booster Batterie Voiture Multifonction", price:349, cat:'auto' },
+    p5:  { name:"Sangles de Résistance Set Complet", price:99, cat:'sport' },
+    p6:  { name:"Trousse de Toilette Voyage Compacte", price:79, cat:'voyage' },
+    p7:  { name:"Portefeuille Cuir Slim Anti-RFID", price:129, cat:'montres' },
+    p8:  { name:"Support Bureau Ajustable pour Téléphone", price:59, cat:'gadgets' },
+    p9:  { name:"Kit Soin Visage Complet Homme", price:159, cat:'soin' },
+    p10: { name:"Haltères Ajustables Paire 2x5kg", price:279, cat:'sport' },
+    p11: { name:"Housse Sièges Auto Universelle", price:199, cat:'auto' },
+    p12: { name:"Sac à Dos Voyage 30L Résistant à l'Eau", price:349, cat:'voyage' },
+  };
+  const giftCatLabels = {
+    soin:"Soin & Grooming", montres:"Montres & Accessoires", gadgets:"Gadgets & Bureau",
+    sport:"Sport & Performance", auto:"Auto & Outils", voyage:"Voyage & Mobilité"
+  };
+  const giftSubQuestions = {
+    soin:    { title:"Plutôt barbe ou visage ?", options:[
+                { label:"Plutôt barbe", pid:'p1' },
+                { label:"Plutôt visage", pid:'p9' } ] },
+    montres: { title:"Un objet du quotidien, ou qu'on remarque ?", options:[
+                { label:"Un objet qu'il porte tous les jours", pid:'p7' },
+                { label:"Une pièce qu'on remarque", pid:'p2' } ] },
+    gadgets: { title:"Pour le bureau ou la poche ?", options:[
+                { label:"Pour son bureau", pid:'p8' },
+                { label:"Pour sa poche, en déplacement", pid:'p3' } ] },
+    sport:   { title:"Récupération ou renforcement ?", options:[
+                { label:"Récupération et étirement", pid:'p5' },
+                { label:"Renforcement musculaire", pid:'p10' } ] },
+    auto:    { title:"Confort ou dépannage ?", options:[
+                { label:"Confort au quotidien", pid:'p11' },
+                { label:"Dépannage et sécurité", pid:'p4' } ] },
+    voyage:  { title:"Trousse ou sac ?", options:[
+                { label:"Trousse d'organisation", pid:'p6' },
+                { label:"Sac pour porter ses affaires", pid:'p12' } ] },
+  };
+  const giftOccasionMsg = {
+    anniversaire:"Parfait pour souligner un anniversaire.",
+    remerciement:"Une belle façon de dire merci, sans en faire trop.",
+    plaisir:"Sans occasion particulière, juste pour lui faire plaisir.",
+    entreprise:"Sobre et soigné, adapté à un cadeau professionnel.",
+  };
+
+  let giftWhoCat = null;
+  let giftResultProductId = null;
+
   function openGiftGuide(){
     document.getElementById('giftOverlay').classList.add('open');
     document.getElementById('giftModal').classList.add('open');
@@ -1347,38 +1407,54 @@
     document.getElementById('giftOverlay').classList.remove('open');
     document.getElementById('giftModal').classList.remove('open');
   }
-  function giftAnswer(key, val){
-    giftAnswers[key] = val;
-    if (key === 'who') {
-      document.getElementById('giftStep1').classList.remove('active');
-      document.getElementById('giftStep2').classList.add('active');
-      document.getElementById('giftProg1').classList.add('done');
-    } else if (key === 'budget') {
-      document.getElementById('giftStep2').classList.remove('active');
-      document.getElementById('giftStepResult').classList.add('active');
-      document.getElementById('giftProg2').classList.add('done');
-      showGiftResult();
-    }
+  function giftAnswerWho(cat){
+    giftWhoCat = cat;
+    const sub = giftSubQuestions[cat];
+    document.getElementById('giftStep2Title').textContent = sub.title;
+    document.getElementById('giftDynamicOptions').innerHTML = sub.options.map(opt =>
+      `<button class="gift-option" onclick="giftAnswerProduct('${opt.pid}')">${opt.label}</button>`
+    ).join('');
+    document.getElementById('giftStep1').classList.remove('active');
+    document.getElementById('giftStep2').classList.add('active');
+    document.getElementById('giftProg1').classList.add('done');
   }
-  function showGiftResult(){
-    const map = {
-      actif: { title: "Sport & Performance", desc: "Accessoires de récupération et fitness, pensés pour l'homme actif.", cat: "sport" },
-      soigne: { title: "Soin & Grooming", desc: "Tout pour prendre soin de lui, simplement.", cat: "soin" },
-      pratique: { title: "Gadgets & Bureau", desc: "Des objets malins pour le quotidien.", cat: "gadgets" },
-      voyageur: { title: "Voyage & Mobilité", desc: "Pratique pour la route ou les déplacements.", cat: "voyage" },
-    };
-    const pick = map[giftAnswers.who] || map.pratique;
-    document.getElementById('giftResultTitle').textContent = pick.title;
-    document.getElementById('giftResultDesc').textContent = pick.desc;
-    document.getElementById('giftResultLink').href = "boutique.html#" + pick.cat;
+  function giftAnswerProduct(pid){
+    giftResultProductId = pid;
+    document.getElementById('giftStep2').classList.remove('active');
+    document.getElementById('giftStep3').classList.add('active');
+    document.getElementById('giftProg2').classList.add('done');
+  }
+  function giftAnswerOccasion(occasion){
+    document.getElementById('giftStep3').classList.remove('active');
+    document.getElementById('giftStepResult').classList.add('active');
+    document.getElementById('giftProg3').classList.add('done');
+    showGiftResult(occasion);
+  }
+  function showGiftResult(occasion){
+    const product = giftProducts[giftResultProductId];
+    const occasionText = giftOccasionMsg[occasion] || '';
+    document.getElementById('giftResultTitle').textContent = product.name;
+    document.getElementById('giftResultPrice').textContent = product.price + ' DH';
+    document.getElementById('giftResultDesc').textContent = giftCatLabels[product.cat] + '. ' + occasionText;
+    document.getElementById('giftResultLink').href = "boutique.html#" + product.cat;
+  }
+  function giftAddToCart(){
+    if (!giftResultProductId) return;
+    const product = giftProducts[giftResultProductId];
+    addToCart(giftResultProductId, product.name, product.price, null);
+    closeGiftGuide();
+    showToast(product.name + " ajouté au panier");
   }
   function restartGiftGuide(){
-    giftAnswers = {};
+    giftWhoCat = null;
+    giftResultProductId = null;
     document.getElementById('giftStepResult').classList.remove('active');
+    document.getElementById('giftStep3').classList.remove('active');
     document.getElementById('giftStep2').classList.remove('active');
     document.getElementById('giftStep1').classList.add('active');
     document.getElementById('giftProg1').classList.remove('done');
     document.getElementById('giftProg2').classList.remove('done');
+    document.getElementById('giftProg3').classList.remove('done');
   }
 </script>
 
