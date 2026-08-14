@@ -241,6 +241,77 @@
 </style>
 
 
+
+<style>
+  /* ---- CART ---- */
+  .cart-btn{
+    position:relative; background:var(--card); border:1px solid var(--line); width:44px; height:44px;
+    border-radius:100px; display:flex; align-items:center; justify-content:center; cursor:pointer;
+    transition:border-color .2s, transform .2s;
+  }
+  .cart-btn:hover{ border-color:var(--copper); transform:translateY(-1px); }
+  .cart-btn svg{ width:19px; height:19px; stroke:var(--ink); fill:none; stroke-width:1.7; }
+  .cart-badge{
+    position:absolute; top:-5px; right:-5px; background:var(--copper); color:#fff;
+    font-size:10.5px; font-weight:700; min-width:18px; height:18px; border-radius:100px;
+    display:flex; align-items:center; justify-content:center; padding:0 4px;
+  }
+  .cart-overlay{
+    position:fixed; inset:0; background:rgba(21,22,26,0.5); backdrop-filter:blur(2px);
+    z-index:90; opacity:0; pointer-events:none; transition:opacity .25s;
+  }
+  .cart-overlay.open{ opacity:1; pointer-events:auto; }
+  .cart-drawer{
+    position:fixed; top:0; right:0; bottom:0; width:100%; max-width:400px; background:var(--paper);
+    z-index:91; transform:translateX(100%); transition:transform .3s cubic-bezier(.2,.8,.2,1);
+    display:flex; flex-direction:column; box-shadow:-20px 0 50px rgba(21,22,26,0.2);
+  }
+  .cart-drawer.open{ transform:translateX(0); }
+  .cart-head{ padding:22px 24px; border-bottom:1px solid var(--line); display:flex; align-items:center; justify-content:space-between; }
+  .cart-head b{ font-family:'Space Grotesk', sans-serif; font-size:18px; }
+  .cart-close{ background:none; border:none; cursor:pointer; width:32px; height:32px; display:flex; align-items:center; justify-content:center; border-radius:100px; transition:background .2s; }
+  .cart-close:hover{ background:var(--copper-dim); }
+  .cart-close svg{ width:18px; height:18px; stroke:var(--ink); fill:none; stroke-width:1.8; }
+  .cart-body{ flex:1; overflow-y:auto; padding:16px 24px; }
+  .cart-empty{ text-align:center; padding:60px 20px; color:var(--muted); font-size:14px; }
+  .cart-empty svg{ width:40px; height:40px; stroke:var(--line); fill:none; stroke-width:1.3; margin:0 auto 14px; }
+  .cart-item{ display:flex; gap:12px; padding:14px 0; border-bottom:1px solid var(--line); align-items:center; }
+  .cart-item-img{ width:56px; height:56px; border-radius:10px; background:linear-gradient(135deg,#EDEAE3,#F6F4EF); flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+  .cart-item-img svg{ width:24px; height:24px; stroke:var(--muted); fill:none; stroke-width:1.3; opacity:0.6; }
+  .cart-item-info{ flex:1; min-width:0; }
+  .cart-item-info b{ display:block; font-size:13px; font-weight:600; line-height:1.3; }
+  .cart-item-price{ font-family:'Fraunces', serif; font-weight:600; font-size:13.5px; color:var(--copper); margin-top:4px; }
+  .cart-qty{ display:flex; align-items:center; gap:8px; margin-top:8px; }
+  .qty-btn{ width:22px; height:22px; border:1px solid var(--line); background:var(--card); border-radius:6px; cursor:pointer; font-size:14px; line-height:1; display:flex; align-items:center; justify-content:center; }
+  .qty-btn:hover{ border-color:var(--copper); }
+  .cart-item-remove{ font-size:11.5px; color:var(--muted); cursor:pointer; text-decoration:underline; margin-left:auto; }
+  .cart-item-remove:hover{ color:var(--copper); }
+  .cart-footer{ padding:20px 24px 24px; border-top:1px solid var(--line); }
+  .cart-total-row{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:16px; }
+  .cart-total-row span{ font-size:14px; color:var(--muted); }
+  .cart-total-row b{ font-family:'Fraunces', serif; font-weight:600; font-size:22px; }
+  .cart-checkout{
+    width:100%; background:var(--ink); color:#fff; border:none; padding:16px; border-radius:100px;
+    font-weight:600; font-size:15px; cursor:pointer; box-shadow:var(--shadow-md); transition:transform .2s;
+  }
+  .cart-checkout:hover{ transform:translateY(-2px); }
+  .cart-checkout:disabled{ opacity:0.4; cursor:not-allowed; transform:none; }
+  .cart-note{ text-align:center; font-size:11.5px; color:var(--muted); margin-top:10px; }
+
+  .add-to-cart{
+    width:100%; margin-top:12px; background:var(--ink); color:#fff; border:none; padding:11px; border-radius:100px;
+    font-weight:600; font-size:12.5px; cursor:pointer; transition:background .2s, transform .2s;
+  }
+  .add-to-cart:hover{ background:var(--copper); transform:translateY(-1px); }
+  .add-to-cart.added{ background:#2E7D4F; }
+  .toast{
+    position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(20px); z-index:99;
+    background:var(--ink); color:#fff; padding:13px 22px; border-radius:100px; font-size:13.5px; font-weight:600;
+    opacity:0; transition:opacity .25s, transform .25s; pointer-events:none; box-shadow:var(--shadow-lg);
+  }
+  .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+</style>
+
 </head>
 <body>
 
@@ -262,6 +333,10 @@
       <a href="index.html#pourquoi">Pourquoi nous</a>
       <a href="contact.html">Contact</a>
     </div>
+    <button class="cart-btn" onclick="openCart()" aria-label="Panier">
+      <svg viewBox="0 0 24 24"><circle cx="9" cy="20" r="1.5"/><circle cx="17" cy="20" r="1.5"/><path d="M2 3h3l2.4 12.2a2 2 0 0 0 2 1.8h7.2a2 2 0 0 0 2-1.6L21 8H6"/></svg>
+      <span class="cart-badge" id="cartBadge" style="display:none;">0</span>
+    </button>
     <a href="boutique.html" class="nav-cta">Voir la boutique</a>
   </div>
 </nav>
@@ -373,6 +448,134 @@
     </div>
   </div>
 </footer>
+
+
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+<div class="cart-drawer" id="cartDrawer">
+  <div class="cart-head">
+    <b>Mon panier</b>
+    <button class="cart-close" onclick="closeCart()"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </div>
+  <div class="cart-body" id="cartBody">
+    <div class="cart-empty">
+      <svg viewBox="0 0 24 24"><circle cx="9" cy="20" r="1.5"/><circle cx="17" cy="20" r="1.5"/><path d="M2 3h3l2.4 12.2a2 2 0 0 0 2 1.8h7.2a2 2 0 0 0 2-1.6L21 8H6"/></svg>
+      Ton panier est vide
+    </div>
+  </div>
+  <div class="cart-footer">
+    <div class="cart-total-row"><span>Total</span><b id="cartTotal">0 DH</b></div>
+    <button class="cart-checkout" id="cartCheckoutBtn" onclick="checkoutWhatsApp()" disabled>Commander sur WhatsApp</button>
+    <div class="cart-note">Paiement à la livraison · Livraison partout au Maroc</div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+  const WHATSAPP_NUMBER = "212600000000";
+
+  function getCart(){
+    try { return JSON.parse(localStorage.getItem('manivers_cart') || '[]'); }
+    catch(e){ return []; }
+  }
+  function saveCart(cart){
+    localStorage.setItem('manivers_cart', JSON.stringify(cart));
+    updateCartUI();
+  }
+  function addToCart(id, name, price, btn){
+    let cart = getCart();
+    const existing = cart.find(i => i.id === id);
+    if (existing) { existing.qty += 1; }
+    else { cart.push({ id, name, price, qty: 1 }); }
+    saveCart(cart);
+    showToast(name + " ajouté au panier");
+    if (btn) {
+      btn.textContent = "Ajouté ✓";
+      btn.classList.add('added');
+      setTimeout(() => { btn.textContent = "Ajouter au panier"; btn.classList.remove('added'); }, 1400);
+    }
+  }
+  function removeFromCart(id){
+    let cart = getCart().filter(i => i.id !== id);
+    saveCart(cart);
+  }
+  function changeQty(id, delta){
+    let cart = getCart();
+    const item = cart.find(i => i.id === id);
+    if (!item) return;
+    item.qty += delta;
+    if (item.qty <= 0) cart = cart.filter(i => i.id !== id);
+    saveCart(cart);
+  }
+  function cartCount(){
+    return getCart().reduce((sum, i) => sum + i.qty, 0);
+  }
+  function cartTotal(){
+    return getCart().reduce((sum, i) => sum + (i.price * i.qty), 0);
+  }
+  function updateCartUI(){
+    const cart = getCart();
+    const badge = document.getElementById('cartBadge');
+    const count = cartCount();
+    if (badge) {
+      badge.textContent = count;
+      badge.style.display = count > 0 ? 'flex' : 'none';
+    }
+    const body = document.getElementById('cartBody');
+    const totalEl = document.getElementById('cartTotal');
+    const checkoutBtn = document.getElementById('cartCheckoutBtn');
+    if (!body) return;
+
+    if (cart.length === 0) {
+      body.innerHTML = '<div class="cart-empty"><svg viewBox="0 0 24 24"><circle cx="9" cy="20" r="1.5"/><circle cx="17" cy="20" r="1.5"/><path d="M2 3h3l2.4 12.2a2 2 0 0 0 2 1.8h7.2a2 2 0 0 0 2-1.6L21 8H6"/></svg>Ton panier est vide</div>';
+      if (checkoutBtn) checkoutBtn.disabled = true;
+    } else {
+      body.innerHTML = cart.map(item => `
+        <div class="cart-item">
+          <div class="cart-item-img"><svg viewBox="0 0 24 24"><rect x="4" y="7" width="16" height="13" rx="2"/><path d="M8 7V5a4 4 0 0 1 8 0v2"/></svg></div>
+          <div class="cart-item-info">
+            <b>${item.name}</b>
+            <div class="cart-item-price">${item.price} DH</div>
+            <div class="cart-qty">
+              <button class="qty-btn" onclick="changeQty('${item.id}', -1)">−</button>
+              <span>${item.qty}</span>
+              <button class="qty-btn" onclick="changeQty('${item.id}', 1)">+</button>
+              <span class="cart-item-remove" onclick="removeFromCart('${item.id}')">Retirer</span>
+            </div>
+          </div>
+        </div>
+      `).join('');
+      if (checkoutBtn) checkoutBtn.disabled = false;
+    }
+    if (totalEl) totalEl.textContent = cartTotal() + " DH";
+  }
+  function openCart(){
+    document.getElementById('cartDrawer').classList.add('open');
+    document.getElementById('cartOverlay').classList.add('open');
+  }
+  function closeCart(){
+    document.getElementById('cartDrawer').classList.remove('open');
+    document.getElementById('cartOverlay').classList.remove('open');
+  }
+  function showToast(msg){
+    const toast = document.getElementById('toast');
+    if (!toast) return;
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 1800);
+  }
+  function checkoutWhatsApp(){
+    const cart = getCart();
+    if (cart.length === 0) return;
+    let msg = "Nouvelle commande Manivers\n\n";
+    cart.forEach(item => {
+      msg += `${item.qty}x ${item.name} — ${item.price * item.qty} DH\n`;
+    });
+    msg += `\nTotal: ${cartTotal()} DH\n\nNom: \nVille: \nAdresse: `;
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+    window.open(url, '_blank');
+  }
+  document.addEventListener('DOMContentLoaded', updateCartUI);
+</script>
 
 </body>
 </html>
