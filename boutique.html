@@ -12,13 +12,13 @@
 
 <title>Boutique · MANIVERS</title>
 <meta property="og:type" content="website">
-<meta property="og:title" content="Boutique — MANIVERS">
+<meta property="og:title" content="Boutique · MANIVERS">
 <meta property="og:description" content="Toute la sélection Manivers : soin, montres, gadgets, sport, auto et voyage. Paiement à la livraison.">
 <meta property="og:image" content="https://manivers.vercel.app/og-image.png">
 <meta property="og:url" content="https://manivers.vercel.app/boutique.html">
 <meta property="og:locale" content="fr_MA">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Boutique — MANIVERS">
+<meta name="twitter:title" content="Boutique · MANIVERS">
 <meta name="twitter:description" content="Toute la sélection Manivers : soin, montres, gadgets, sport, auto et voyage. Paiement à la livraison.">
 <meta name="twitter:image" content="https://manivers.vercel.app/og-image.png">
 <meta name="description" content="Toute la sélection Manivers : soin, montres, gadgets, sport, auto et voyage. Livraison partout au Maroc, paiement à la livraison.">
@@ -574,7 +574,7 @@
 
 </head>
 <body>
-<div class="offline-banner" id="offlineBanner">Pas de connexion internet — certaines actions ne fonctionneront pas.</div>
+<div class="offline-banner" id="offlineBanner">Pas de connexion internet · certaines actions ne fonctionneront pas.</div>
 
 <div class="topbar">Livraison partout au Maroc via <b>Cathedis</b> · Paiement à la livraison</div>
 
@@ -591,10 +591,6 @@
       <a class="gift-nav-link" onclick="openGiftGuide()">Guide cadeaux</a>
       <a href="contact.html">Contact</a>
     </div>
-    <button class="account-btn" onclick="openAuth()">
-      <div class="account-avatar"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.9 3.1-7 7-7s7 3.1 7 7"/></svg></div>
-      <span id="accountBtnLabel">Connexion</span>
-    </button>
     <button class="wishlist-nav-btn" onclick="openWishlist()" aria-label="Liste d'envies">
       <svg viewBox="0 0 24 24"><path d="M12 21s-8-4.6-8-11a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6.4-8 11-8 11z"/></svg>
       <span class="wishlist-badge" id="wishlistBadge" style="display:none;">0</span>
@@ -1001,293 +997,11 @@
   document.addEventListener('DOMContentLoaded', updateCartUI);
 </script>
 
-<div class="auth-overlay" id="authOverlay" onclick="closeAuth()"></div>
-<div class="auth-modal" id="authModal">
-  <button class="auth-close" onclick="closeAuth()"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
-
-  <div id="authLoggedOut">
-    <div class="auth-tabs">
-      <div class="auth-tab active" id="tabLogin" onclick="switchAuthTab('login')">Connexion</div>
-      <div class="auth-tab" id="tabSignup" onclick="switchAuthTab('signup')">Créer un compte</div>
-    </div>
-
-    <div id="authError" class="auth-error"></div>
-    <div id="authSuccess" class="auth-success"></div>
-
-    <div id="loginForm">
-      <div class="auth-title">Content de te revoir</div>
-      <div class="auth-sub">Connecte-toi pour retrouver ton panier et tes réductions.</div>
-      <div class="auth-field">
-        <label>Email</label>
-        <input type="email" id="loginEmail" placeholder="toi@email.com">
-      </div>
-      <div class="auth-field">
-        <label>Mot de passe</label>
-        <input type="password" id="loginPassword" placeholder="••••••••">
-      </div>
-      <div style="text-align:right; margin-top:-8px; margin-bottom:14px;">
-        <span onclick="showResetForm()" style="font-size:12.5px; color:var(--muted); text-decoration:underline; cursor:pointer;">Mot de passe oublié ?</span>
-      </div>
-      <button class="auth-submit" onclick="doLogin()">Se connecter</button>
-    </div>
-
-    <div id="resetForm" style="display:none;">
-      <div class="auth-title">Réinitialiser ton mot de passe</div>
-      <div class="auth-sub">On t'envoie un lien par email pour choisir un nouveau mot de passe.</div>
-      <div class="auth-field">
-        <label>Email</label>
-        <input type="email" id="resetEmail" placeholder="toi@email.com">
-      </div>
-      <button class="auth-submit" onclick="doPasswordReset()">Envoyer le lien</button>
-      <div style="text-align:center; margin-top:14px;">
-        <span onclick="switchAuthTab('login')" style="font-size:12.5px; color:var(--muted); text-decoration:underline; cursor:pointer;">Retour à la connexion</span>
-      </div>
-    </div>
-
-    <div id="signupForm" style="display:none;">
-      <div class="auth-title">Créer ton compte</div>
-      <div class="auth-sub">Sauvegarde ton panier et débloque 10% de réduction sur ta première commande.</div>
-      <div class="auth-field">
-        <label>Nom complet</label>
-        <input type="text" id="signupName" placeholder="Ton nom">
-      </div>
-      <div class="auth-field">
-        <label>Email</label>
-        <input type="email" id="signupEmail" placeholder="toi@email.com">
-      </div>
-      <div class="auth-field">
-        <label>Mot de passe</label>
-        <input type="password" id="signupPassword" placeholder="6 caractères minimum">
-      </div>
-      <button class="auth-submit" onclick="doSignup()">Créer mon compte</button>
-    </div>
-  </div>
-
-  <div id="authLoggedIn" style="display:none;">
-    <div class="auth-title">Mon compte</div>
-    <div class="discount-banner">
-      <svg viewBox="0 0 24 24"><path d="M12 3l2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5z"/></svg>
-      <div>
-        <b>Ta réduction est active</b>
-        <span>Code : <span class="discount-code" id="userDiscountCode">BIENVENUE10</span> · mentionne-le lors de ta commande</span>
-      </div>
-    </div>
-    <div class="account-panel-row"><span>Email</span><span id="userEmailDisplay">·</span></div>
-    <div class="account-panel-row"><span>Panier sauvegardé</span><span id="userCartSaved">Oui</span></div>
-    <button class="logout-btn" onclick="doLogout()">Se déconnecter</button>
-  </div>
-</div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
   const SUPABASE_URL = "https://nglfmdhclwqhgcszlujy.supabase.co";
   const SUPABASE_ANON_KEY = "sb_publishable_4dkWExt3-V2nykYQsmZRXQ_SEC8JkQT";
   const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-  let currentUser = null;
-  let currentProfile = null;
-
-  function openAuth(){
-    document.getElementById('authOverlay').classList.add('open');
-    document.getElementById('authModal').classList.add('open');
-  }
-  function closeAuth(){
-    document.getElementById('authOverlay').classList.remove('open');
-    document.getElementById('authModal').classList.remove('open');
-    hideAuthMessages();
-  }
-  function switchAuthTab(tab){
-    document.getElementById('tabLogin').classList.toggle('active', tab === 'login');
-    document.getElementById('tabSignup').classList.toggle('active', tab === 'signup');
-    document.getElementById('loginForm').style.display = tab === 'login' ? 'block' : 'none';
-    document.getElementById('signupForm').style.display = tab === 'signup' ? 'block' : 'none';
-    document.getElementById('resetForm').style.display = 'none';
-    hideAuthMessages();
-  }
-  function showAuthError(msg){
-    const el = document.getElementById('authError');
-    el.textContent = msg;
-    el.classList.add('show');
-    document.getElementById('authSuccess').classList.remove('show');
-  }
-  function showAuthSuccess(msg){
-    const el = document.getElementById('authSuccess');
-    el.textContent = msg;
-    el.classList.add('show');
-    document.getElementById('authError').classList.remove('show');
-  }
-  function hideAuthMessages(){
-    document.getElementById('authError').classList.remove('show');
-    document.getElementById('authSuccess').classList.remove('show');
-  }
-
-
-  function showResetForm(){
-    document.getElementById('loginForm').style.display = 'none';
-    document.getElementById('signupForm').style.display = 'none';
-    document.getElementById('resetForm').style.display = 'block';
-    hideAuthMessages();
-  }
-  const NETWORK_ERROR_MSG = "Pas de connexion internet. Vérifie ta connexion et réessaie.";
-
-  function isNetworkError(e){
-    return e instanceof TypeError || (e && /fetch|network|Failed to fetch/i.test(e.message || ''));
-  }
-
-  async function withButtonLoading(btn, loadingText, fn){
-    const originalText = btn.textContent;
-    btn.disabled = true;
-    btn.textContent = loadingText;
-    try {
-      await fn();
-    } finally {
-      btn.disabled = false;
-      btn.textContent = originalText;
-    }
-  }
-
-  async function doPasswordReset(){
-    const email = document.getElementById('resetEmail').value.trim();
-    if (!email) { showAuthError("Merci d'indiquer ton email."); return; }
-    const btn = document.querySelector('#resetForm .auth-submit');
-    await withButtonLoading(btn, 'Envoi en cours...', async () => {
-      try {
-        const redirectTo = window.location.origin + '/reset-password.html';
-        const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo });
-        if (error) { showAuthError(error.message); return; }
-        showAuthSuccess("Lien envoyé ! Vérifie ta boîte mail (et les spams).");
-      } catch(e) {
-        showAuthError(isNetworkError(e) ? NETWORK_ERROR_MSG : "Une erreur est survenue. Réessaie.");
-      }
-    });
-  }
-
-  async function doSignup(){
-    const name = document.getElementById('signupName').value.trim();
-    const email = document.getElementById('signupEmail').value.trim();
-    const password = document.getElementById('signupPassword').value;
-    if (!email || !password || password.length < 6) {
-      showAuthError("Merci de remplir un email valide et un mot de passe de 6 caractères minimum.");
-      return;
-    }
-    const btn = document.querySelector('#signupForm .auth-submit');
-    await withButtonLoading(btn, 'Création en cours...', async () => {
-      try {
-        const { data, error } = await sb.auth.signUp({ email, password, options: { data: { full_name: name } } });
-        if (error) { showAuthError(error.message); return; }
-        if (data.session) {
-          showAuthSuccess("Compte créé, connexion en cours...");
-          setTimeout(async () => {
-            closeAuth();
-            await onLoggedIn(data.user);
-            showToast("Bienvenue " + (name || data.user.email) + " !");
-          }, 900);
-        } else {
-          showAuthSuccess("Compte créé ! Vérifie ton email pour confirmer, puis connecte-toi.");
-          setTimeout(() => switchAuthTab('login'), 2500);
-        }
-      } catch(e) {
-        showAuthError(isNetworkError(e) ? NETWORK_ERROR_MSG : "Une erreur est survenue. Réessaie.");
-      }
-    });
-  }
-
-  async function doLogin(){
-    const email = document.getElementById('loginEmail').value.trim();
-    const password = document.getElementById('loginPassword').value;
-    if (!email || !password) { showAuthError("Merci de remplir ton email et ton mot de passe."); return; }
-    const btn = document.querySelector('#loginForm .auth-submit');
-    await withButtonLoading(btn, 'Connexion en cours...', async () => {
-      try {
-        const { data, error } = await sb.auth.signInWithPassword({ email, password });
-        if (error) { showAuthError(error.message); return; }
-        closeAuth();
-        await onLoggedIn(data.user);
-      } catch(e) {
-        showAuthError(isNetworkError(e) ? NETWORK_ERROR_MSG : "Une erreur est survenue. Réessaie.");
-      }
-    });
-  }
-
-  async function doLogout(){
-    await sb.auth.signOut();
-    currentUser = null;
-    currentProfile = null;
-    updateAccountUI();
-    closeAuth();
-    showToast("Déconnecté");
-  }
-
-  async function onLoggedIn(user){
-    currentUser = user;
-    const { data: profile } = await sb.from('profiles').select('*').eq('id', user.id).single();
-    currentProfile = profile;
-
-    // Merge local cart with saved cart
-    const localCart = getCart();
-    const savedCart = (profile && profile.cart) ? profile.cart : [];
-    const merged = mergeCarts(localCart, savedCart);
-    saveCartLocalOnly(merged);
-    await syncCartToServer();
-
-    updateAccountUI();
-    updateCartUI();
-  }
-
-  function mergeCarts(a, b){
-    const map = {};
-    [...a, ...b].forEach(item => {
-      if (map[item.id]) { map[item.id].qty += item.qty; }
-      else { map[item.id] = { ...item }; }
-    });
-    return Object.values(map);
-  }
-
-  function saveCartLocalOnly(cart){
-    localStorage.setItem('manivers_cart', JSON.stringify(cart));
-  }
-
-  async function syncCartToServer(){
-    if (!currentUser) return;
-    const cart = getCart();
-    await sb.from('profiles').update({ cart }).eq('id', currentUser.id);
-  }
-
-  function updateAccountUI(){
-    const btn = document.getElementById('accountBtnLabel');
-    const loggedOutView = document.getElementById('authLoggedOut');
-    const loggedInView = document.getElementById('authLoggedIn');
-    if (currentUser) {
-      if (btn) btn.textContent = (currentProfile && currentProfile.full_name) ? currentProfile.full_name.split(' ')[0] : currentUser.email.split('@')[0];
-      if (loggedOutView) loggedOutView.style.display = 'none';
-      if (loggedInView) loggedInView.style.display = 'block';
-      const emailEl = document.getElementById('userEmailDisplay');
-      if (emailEl) emailEl.textContent = currentUser.email;
-      const codeEl = document.getElementById('userDiscountCode');
-      if (codeEl && currentProfile) codeEl.textContent = currentProfile.discount_code || 'BIENVENUE10';
-    } else {
-      if (btn) btn.textContent = 'Connexion';
-      if (loggedOutView) loggedOutView.style.display = 'block';
-      if (loggedInView) loggedInView.style.display = 'none';
-    }
-  }
-
-  // On page load, restore session if any
-  document.addEventListener('DOMContentLoaded', async () => {
-    const { data: { session } } = await sb.auth.getSession();
-    if (session && session.user) {
-      await onLoggedIn(session.user);
-    } else {
-      updateAccountUI();
-    }
-  });
-
-  // Wrap saveCart to also sync to server when logged in (cart.js defines saveCart already)
-  const _originalSaveCart = window.saveCart;
-  window.saveCart = function(cart){
-    localStorage.setItem('manivers_cart', JSON.stringify(cart));
-    updateCartUI();
-    if (currentUser) syncCartToServer();
-  };
 </script>
 
 <!-- WISHLIST DRAWER -->
