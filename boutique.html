@@ -572,6 +572,45 @@
   .mobile-nav-panel a:last-child{ border-bottom:none; }
 </style>
 
+<style>
+  .checkout-overlay{
+    position:fixed; inset:0; background:rgba(21,22,26,0.55); backdrop-filter:blur(2px);
+    z-index:96; opacity:0; pointer-events:none; transition:opacity .3s;
+  }
+  .checkout-overlay.open{ opacity:1; pointer-events:auto; }
+  .checkout-modal{
+    position:fixed; top:50%; left:50%; transform:translate(-50%,-48%) scale(0.97); width:92%; max-width:420px;
+    background:var(--card); border-radius:22px; z-index:97; padding:32px 28px;
+    box-shadow:var(--shadow-lg); opacity:0; pointer-events:none; transition:opacity .25s, transform .25s;
+    max-height:88vh; overflow-y:auto;
+  }
+  .checkout-modal.open{ opacity:1; pointer-events:auto; transform:translate(-50%,-50%) scale(1); }
+  .checkout-close{ position:absolute; top:18px; right:18px; background:none; border:none; cursor:pointer; width:30px; height:30px; border-radius:100px; display:flex; align-items:center; justify-content:center; transition:background .2s; }
+  .checkout-close:hover{ background:var(--copper-dim); }
+  .checkout-close svg{ width:16px; height:16px; stroke:var(--ink); fill:none; stroke-width:1.8; }
+  .checkout-title{ font-family:'Fraunces', serif; font-weight:600; font-size:22px; margin-bottom:6px; }
+  .checkout-sub{ font-size:13px; color:var(--muted); margin-bottom:20px; }
+  .checkout-field{ margin-bottom:14px; }
+  .checkout-field label{ display:block; font-size:12px; font-weight:600; margin-bottom:6px; }
+  .checkout-field input, .checkout-field textarea{
+    width:100%; padding:13px 14px; border-radius:10px; border:1px solid var(--line);
+    background:var(--paper); font-family:inherit; font-size:14.5px; color:var(--ink); resize:none;
+  }
+  .checkout-field input:focus, .checkout-field textarea:focus{ outline:2px solid var(--copper); outline-offset:1px; }
+  .checkout-row{ display:flex; gap:10px; }
+  .checkout-row .checkout-field{ flex:1; }
+  .checkout-error{ background:#FBEAEA; color:#B3261E; font-size:12.5px; padding:10px 14px; border-radius:10px; margin-bottom:14px; display:none; }
+  .checkout-error.show{ display:block; }
+  .checkout-submit{
+    width:100%; background:var(--ink); color:#fff; border:none; padding:15px; border-radius:100px;
+    font-weight:600; font-size:14.5px; cursor:pointer; margin-top:6px; transition:transform .2s;
+  }
+  .checkout-submit:hover{ transform:translateY(-2px); }
+  .checkout-submit:disabled{ opacity:0.5; cursor:not-allowed; transform:none; }
+  .checkout-summary{ background:var(--paper); border-radius:12px; padding:14px 16px; margin-bottom:18px; font-size:13px; color:var(--muted); }
+  .checkout-summary b{ color:var(--ink); }
+</style>
+
 </head>
 <body>
 <div class="offline-banner" id="offlineBanner">Pas de connexion internet · certaines actions ne fonctionneront pas.</div>
@@ -892,6 +931,7 @@
 
 <script>
   const WHATSAPP_NUMBER = "212706122823";
+  const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbyjSGggrsM8gbEFQj00YydQH-uOx3roT5BimFBp2OgvJr76GWBJ4fmQyMnRksUIYIOP/exec";
 
   function getCart(){
     try { return JSON.parse(localStorage.getItem('manivers_cart') || '[]'); }
@@ -986,13 +1026,61 @@
   function checkoutWhatsApp(){
     const cart = getCart();
     if (cart.length === 0) return;
+    closeCart();
+    openCheckoutForm();
+  }
+  function openCheckoutForm(){
+    const cart = getCart();
+    if (cart.length === 0) return;
+    const summary = document.getElementById('checkoutSummary');
+    const itemsText = cart.map(i => `${i.qty}x ${i.name}`).join(', ');
+    summary.innerHTML = `<b>${cart.length} article${cart.length>1?'s':''}</b> · ${itemsText}<br><b>Total : ${cartTotal()} DH</b>`;
+    document.getElementById('checkoutOverlay').classList.add('open');
+    document.getElementById('checkoutModal').classList.add('open');
+  }
+  function closeCheckoutForm(){
+    document.getElementById('checkoutOverlay').classList.remove('open');
+    document.getElementById('checkoutModal').classList.remove('open');
+  }
+  function submitCheckoutForm(){
+    const name = document.getElementById('checkoutName').value.trim();
+    const email = document.getElementById('checkoutEmail').value.trim();
+    const phone = document.getElementById('checkoutPhone').value.trim();
+    const city = document.getElementById('checkoutCity').value.trim();
+    const address = document.getElementById('checkoutAddress').value.trim();
+    const errorEl = document.getElementById('checkoutError');
+
+    if (!name || !phone || !city || !address) {
+      errorEl.textContent = "Merci de remplir au moins le nom, le téléphone, la ville et l'adresse.";
+      errorEl.classList.add('show');
+      return;
+    }
+    errorEl.classList.remove('show');
+
+    const cart = getCart();
+    const produitsText = cart.map(item => `${item.qty}x ${item.name} (${item.price * item.qty} DH)`).join(', ');
     let msg = "Nouvelle commande Manivers\n\n";
     cart.forEach(item => {
       msg += `${item.qty}x ${item.name} · ${item.price * item.qty} DH\n`;
     });
-    msg += `\nTotal: ${cartTotal()} DH\n\nNom: \nVille: \nAdresse: `;
+    msg += `\nTotal: ${cartTotal()} DH`;
+    msg += `\n\nNom: ${name}`;
+    if (email) msg += `\nEmail: ${email}`;
+    msg += `\nTéléphone: ${phone}`;
+    msg += `\nVille: ${city}`;
+    msg += `\nAdresse: ${address}`;
+
+    const sheetParams = new URLSearchParams({
+      nom: name, email: email, telephone: phone, ville: city, adresse: address,
+      produits: produitsText, total: cartTotal()
+    });
+    fetch(GOOGLE_SHEET_URL + '?' + sheetParams.toString(), { mode: 'no-cors' }).catch(() => {});
+
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
     window.open(url, '_blank');
+    closeCheckoutForm();
+    saveCart([]);
+    showToast("Commande envoyée, merci !");
   }
   document.addEventListener('DOMContentLoaded', updateCartUI);
 </script>
@@ -1332,5 +1420,36 @@
   }
 </script>
 
+<div class="checkout-overlay" id="checkoutOverlay" onclick="closeCheckoutForm()"></div>
+<div class="checkout-modal" id="checkoutModal">
+  <button class="checkout-close" onclick="closeCheckoutForm()"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  <div class="checkout-title">Tes coordonnées</div>
+  <div class="checkout-sub">Pour qu'on puisse te livrer, sans aller-retour inutile sur WhatsApp.</div>
+  <div class="checkout-summary" id="checkoutSummary">·</div>
+  <div id="checkoutError" class="checkout-error"></div>
+  <div class="checkout-field">
+    <label>Nom complet</label>
+    <input type="text" id="checkoutName" placeholder="Ton nom">
+  </div>
+  <div class="checkout-row">
+    <div class="checkout-field">
+      <label>Email</label>
+      <input type="email" id="checkoutEmail" placeholder="toi@email.com">
+    </div>
+    <div class="checkout-field">
+      <label>Téléphone</label>
+      <input type="tel" id="checkoutPhone" placeholder="06 00 00 00 00">
+    </div>
+  </div>
+  <div class="checkout-field">
+    <label>Ville</label>
+    <input type="text" id="checkoutCity" placeholder="Casablanca">
+  </div>
+  <div class="checkout-field">
+    <label>Adresse complète</label>
+    <textarea id="checkoutAddress" rows="2" placeholder="Rue, numéro, quartier, repère éventuel"></textarea>
+  </div>
+  <button class="checkout-submit" onclick="submitCheckoutForm()">Envoyer la commande sur WhatsApp</button>
+</div>
 </body>
 </html>
