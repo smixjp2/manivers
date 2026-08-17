@@ -1355,12 +1355,15 @@
     const icon = catIcons[p.category] || catIcons.soin;
     const safeName = escapeAttr(p.name);
     const isOccasion = p.condition === 'occasion';
+    const media = p.image_url
+      ? `<img src="${p.image_url}" alt="${safeName}" style="width:100%; height:100%; object-fit:cover;">`
+      : `<svg viewBox="0 0 24 24">${icon}</svg>`;
     return `
       <div class="prod-card">
         <div class="prod-img"><button class="wishlist-btn" data-id="${p.id}" onclick="event.stopPropagation(); toggleWishlist('${p.id}', '${safeName}', ${p.price}, this)"><svg viewBox="0 0 24 24"><path d="M12 21s-8-4.6-8-11a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6.4-8 11-8 11z"/></svg></button>
           ${p.badge ? `<span class="prod-badge">${p.badge}</span>` : ''}
           ${isOccasion ? `<span class="prod-condition-chip">Occasion</span>` : ''}
-          <svg viewBox="0 0 24 24">${icon}</svg>
+          ${media}
         </div>
         <div class="prod-body">
           <b>${p.name}</b>

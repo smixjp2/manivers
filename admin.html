@@ -694,6 +694,14 @@
     <input type="text" id="prodName" placeholder="Ex: Tondeuse Barbe Pro">
   </div>
   <div class="admin-field">
+    <label>Photo du produit</label>
+    <input type="file" id="prodImageFile" accept="image/*" onchange="previewProductImage(this)">
+    <div id="imagePreviewWrap" style="margin-top:10px; display:none;">
+      <img id="imagePreview" style="width:100%; max-height:180px; object-fit:cover; border-radius:10px;">
+    </div>
+    <input type="hidden" id="prodImageUrl">
+  </div>
+  <div class="admin-field">
     <label>Description</label>
     <input type="text" id="prodDescription" placeholder="Courte description">
   </div>
@@ -827,6 +835,9 @@
     document.getElementById('prodCondition').value = 'neuf';
     document.getElementById('prodActive').checked = true;
     document.getElementById('prodFeatured').checked = false;
+    document.getElementById('prodImageFile').value = '';
+    document.getElementById('prodImageUrl').value = '';
+    document.getElementById('imagePreviewWrap').style.display = 'none';
     document.getElementById('productModalOverlay').classList.add('open');
     document.getElementById('productModal').classList.add('open');
   }
@@ -834,6 +845,16 @@
   function closeProductModal(){
     document.getElementById('productModalOverlay').classList.remove('open');
     document.getElementById('productModal').classList.remove('open');
+  }
+
+  function previewProductImage(input){
+    if (!input.files || !input.files[0]) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      document.getElementById('imagePreview').src = e.target.result;
+      document.getElementById('imagePreviewWrap').style.display = 'block';
+    };
+    reader.readAsDataURL(input.files[0]);
   }
 
   function editProduct(id){
@@ -850,6 +871,14 @@
     document.getElementById('prodCondition').value = p.condition || 'neuf';
     document.getElementById('prodActive').checked = p.active;
     document.getElementById('prodFeatured').checked = p.featured;
+    document.getElementById('prodImageFile').value = '';
+    document.getElementById('prodImageUrl').value = p.image_url || '';
+    if (p.image_url) {
+      document.getElementById('imagePreview').src = p.image_url;
+      document.getElementById('imagePreviewWrap').style.display = 'block';
+    } else {
+      document.getElementById('imagePreviewWrap').style.display = 'none';
+    }
     document.getElementById('productModalOverlay').classList.add('open');
     document.getElementById('productModal').classList.add('open');
   }
@@ -869,15 +898,28 @@
 
     if (!name || !price) { alert('Nom et prix sont obligatoires.'); return; }
 
+    const productId = id || ('p' + Date.now());
+    let image_url = document.getElementById('prodImageUrl').value || null;
+
+    const fileInput = document.getElementById('prodImageFile');
+    if (fileInput.files && fileInput.files[0]) {
+      const file = fileInput.files[0];
+      const ext = file.name.split('.').pop();
+      const path = `${productId}-${Date.now()}.${ext}`;
+      const { error: uploadError } = await sb.storage.from('product-images').upload(path, file, { upsert: true });
+      if (uploadError) { alert('Erreur upload image: ' + uploadError.message); return; }
+      const { data: urlData } = sb.storage.from('product-images').getPublicUrl(path);
+      image_url = urlData.publicUrl;
+    }
+
     if (id) {
       const { error } = await sb.from('products').update({
-        name, description, price, old_price, category, badge, active, featured
+        name, description, price, old_price, category, badge, condition, active, featured, image_url
       }).eq('id', id);
       if (error) { alert('Erreur: ' + error.message); return; }
     } else {
-      const newId = 'p' + Date.now();
       const { error } = await sb.from('products').insert({
-        id: newId, name, description, price, old_price, category, badge, condition, active, featured,
+        id: productId, name, description, price, old_price, category, badge, condition, active, featured, image_url,
         sort_order: allProducts.length + 1
       });
       if (error) { alert('Erreur: ' + error.message); return; }
