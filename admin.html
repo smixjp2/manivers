@@ -623,6 +623,12 @@
 </style>
 </head>
 <body>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+  const SUPABASE_URL = "https://nglfmdhclwqhgcszlujy.supabase.co";
+  const SUPABASE_ANON_KEY = "sb_publishable_4dkWExt3-V2nykYQsmZRXQ_SEC8JkQT";
+  const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+</script>
 <div class="offline-banner" id="offlineBanner">Pas de connexion internet · certaines actions ne fonctionneront pas.</div>
 
 <div class="admin-wrap">
