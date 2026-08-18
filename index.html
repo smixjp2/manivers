@@ -827,9 +827,22 @@
     localStorage.setItem('manivers_cart', JSON.stringify(cart));
     updateCartUI();
   }
-  function addToCart(id, name, price, btn){
+  async function getProductStock(id){
+    try {
+      const { data, error } = await sb.from('products').select('stock').eq('id', id).single();
+      if (error || !data) return null;
+      return (typeof data.stock === 'number') ? data.stock : null;
+    } catch(e) { return null; }
+  }
+  async function addToCart(id, name, price, btn){
     let cart = getCart();
     const existing = cart.find(i => i.id === id);
+    const currentQty = existing ? existing.qty : 0;
+    const stock = await getProductStock(id);
+    if (stock !== null && currentQty + 1 > stock) {
+      showToast(stock === 0 ? "Ce produit est en rupture de stock" : "Stock limite : " + stock + " disponible(s)");
+      return;
+    }
     if (existing) { existing.qty += 1; }
     else { cart.push({ id, name, price, qty: 1 }); }
     saveCart(cart);
@@ -844,10 +857,17 @@
     let cart = getCart().filter(i => i.id !== id);
     saveCart(cart);
   }
-  function changeQty(id, delta){
+  async function changeQty(id, delta){
     let cart = getCart();
     const item = cart.find(i => i.id === id);
     if (!item) return;
+    if (delta > 0) {
+      const stock = await getProductStock(id);
+      if (stock !== null && item.qty + delta > stock) {
+        showToast("Stock limite : " + stock + " disponible(s)");
+        return;
+      }
+    }
     item.qty += delta;
     if (item.qty <= 0) cart = cart.filter(i => i.id !== id);
     saveCart(cart);
@@ -944,6 +964,19 @@
     errorEl.classList.remove('show');
 
     const cart = getCart();
+
+    // Verification finale du stock avant validation de la commande
+    for (const item of cart) {
+      const stock = await getProductStock(item.id);
+      if (stock !== null && item.qty > stock) {
+        errorEl.textContent = stock === 0
+          ? `"${item.name}" est en rupture de stock. Merci de le retirer du panier.`
+          : `Stock insuffisant pour "${item.name}" : ${stock} disponible(s), tu en as ${item.qty}.`;
+        errorEl.classList.add('show');
+        return;
+      }
+    }
+
     const produitsText = cart.map(item => `${item.qty}x ${item.name} (${item.price * item.qty} DH)`).join(', ');
     let msg = "Nouvelle commande Manivers\n\n";
     cart.forEach(item => {
