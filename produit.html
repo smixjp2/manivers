@@ -594,7 +594,7 @@
   .pd-price-row{ display:flex; align-items:baseline; gap:12px; margin-bottom:22px; }
   .pd-price-now{ font-family:'Fraunces', serif; font-weight:600; font-size:28px; }
   .pd-price-old{ font-size:16px; color:var(--muted); text-decoration:line-through; }
-  .pd-desc{ font-size:15px; color:#3E4148; line-height:1.75; margin-bottom:28px; }
+  .pd-desc{ font-size:15px; color:#3E4148; line-height:1.75; margin-bottom:28px; white-space:pre-line; }
   .pd-add-btn{ width:100%; background:var(--ink); color:#fff; border:none; padding:16px; border-radius:100px; font-weight:600; font-size:15px; cursor:pointer; margin-bottom:12px; }
   .pd-add-btn:disabled{ opacity:0.5; }
   .pd-note{ font-size:12.5px; color:var(--muted); text-align:center; }
@@ -1241,6 +1241,10 @@
     return div.innerHTML;
   }
 
+  function escapeAttr(str){
+    return String(str).replace(/'/g, "\\'").replace(/"/g, '&quot;');
+  }
+
   async function loadProductDetail(){
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id');
@@ -1263,7 +1267,7 @@
 
     const icon = catIcons[p.category] || catIcons.soin;
     const media = p.image_url
-      ? `<img src="${p.image_url}" alt="${escapeHtml(p.name)}">`
+      ? `<img src="${p.image_url}" alt="${escapeAttr(p.name)}">`
       : `<svg viewBox="0 0 24 24">${icon}</svg>`;
     const isOccasion = p.condition === 'occasion';
     const isWished = getWishlist().some(w => w.id === p.id);
@@ -1274,7 +1278,7 @@
           ${media}
           ${p.badge ? `<span class="pd-badge">${escapeHtml(p.badge)}</span>` : ''}
           ${isOccasion ? `<span class="pd-condition">Occasion</span>` : ''}
-          <button class="pd-wishlist ${isWished ? 'active' : ''}" id="pdWishlistBtn" onclick="togglePdWishlist('${p.id}', '${escapeHtml(p.name)}', ${p.price})">
+          <button class="pd-wishlist ${isWished ? 'active' : ''}" id="pdWishlistBtn" onclick="togglePdWishlist('${p.id}', '${escapeAttr(p.name)}', ${p.price})">
             <svg viewBox="0 0 24 24"><path d="M12 21s-8-4.6-8-11a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6.4-8 11-8 11z"/></svg>
           </button>
         </div>
@@ -1286,7 +1290,7 @@
             ${p.old_price ? `<span class="pd-price-old">${p.old_price} DH</span>` : ''}
           </div>
           <p class="pd-desc">${escapeHtml(p.description || "Aucune description disponible pour ce produit.")}</p>
-          <button class="pd-add-btn" onclick="addToCart('${p.id}', '${escapeHtml(p.name)}', ${p.price}, this)">Ajouter au panier</button>
+          <button class="pd-add-btn" onclick="addToCart('${p.id}', '${escapeAttr(p.name)}', ${p.price}, this)">Ajouter au panier</button>
           <p class="pd-note">Paiement a la livraison · Livraison partout au Maroc</p>
         </div>
       </div>
