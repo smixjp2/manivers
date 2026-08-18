@@ -898,7 +898,14 @@
         <td><span class="admin-chip ${p.condition === 'occasion' ? 'inactive' : ''}">${p.condition === 'occasion' ? 'Occasion' : 'Neuf'}</span></td>
         <td>${catLabels[p.category] || p.category}</td>
         <td>${p.price} DH${p.old_price ? '<span class="admin-price-old">' + p.old_price + ' DH</span>' : ''}</td>
-        <td><span style="font-weight:600; ${(p.stock === 0) ? 'color:#B3261E;' : (p.stock <= 3 ? 'color:#B8763F;' : '')}">${p.stock ?? 0}</span>${p.stock === 0 ? ' <span class="admin-chip inactive">Epuise</span>' : (p.stock <= 3 ? ' <span class="admin-chip" style="background:#F1E4D6; color:#B8763F;">Bas</span>' : '')}</td>
+        <td>
+          <div style="display:flex; align-items:center; gap:6px;">
+            <button onclick="adjustStock('${p.id}', -1)" style="width:22px; height:22px; border-radius:6px; border:1px solid var(--line); background:var(--paper); cursor:pointer; font-weight:700; font-size:13px; line-height:1; color:var(--ink);">-</button>
+            <span style="font-weight:600; min-width:18px; text-align:center; ${(p.stock === 0) ? 'color:#B3261E;' : (p.stock <= 3 ? 'color:#B8763F;' : '')}">${p.stock ?? 0}</span>
+            <button onclick="adjustStock('${p.id}', 1)" style="width:22px; height:22px; border-radius:6px; border:1px solid var(--line); background:var(--paper); cursor:pointer; font-weight:700; font-size:13px; line-height:1; color:var(--ink);">+</button>
+          </div>
+          ${p.stock === 0 ? '<span class="admin-chip inactive" style="margin-top:4px; display:inline-block;">Epuise</span>' : (p.stock <= 3 ? '<span class="admin-chip" style="margin-top:4px; display:inline-block; background:#F1E4D6; color:#B8763F;">Bas</span>' : '')}
+        </td>
         <td><span class="admin-chip ${p.active ? '' : 'inactive'}">${p.active ? 'Actif' : 'Masque'}</span></td>
         <td>
           <div class="admin-actions">
@@ -1016,6 +1023,15 @@
     }
 
     closeProductModal();
+    loadProducts();
+  }
+
+  async function adjustStock(id, delta){
+    const p = allProducts.find(x => x.id === id);
+    if (!p) return;
+    const newStock = Math.max(0, (p.stock || 0) + delta);
+    const { error } = await sb.from('products').update({ stock: newStock }).eq('id', id);
+    if (error) { alert('Erreur: ' + error.message); return; }
     loadProducts();
   }
 
