@@ -882,7 +882,7 @@
     document.getElementById('checkoutOverlay').classList.remove('open');
     document.getElementById('checkoutModal').classList.remove('open');
   }
-  function submitCheckoutForm(){
+  async function submitCheckoutForm(){
     const name = document.getElementById('checkoutName').value.trim();
     const email = document.getElementById('checkoutEmail').value.trim();
     const phone = document.getElementById('checkoutPhone').value.trim();
@@ -915,6 +915,23 @@
       produits: produitsText, total: cartTotal()
     });
     fetch(GOOGLE_SHEET_URL + '?' + sheetParams.toString(), { mode: 'no-cors' }).catch(() => {});
+
+    try {
+      await sb.from('orders').insert({
+        nom: name, email: email || null, telephone: phone, ville: city, adresse: address,
+        produits: produitsText, total: cartTotal()
+      });
+    } catch(e) { console.error('orders insert failed', e); }
+
+    for (const item of cart) {
+      try {
+        const { data: prod } = await sb.from('products').select('stock').eq('id', item.id).single();
+        if (prod && typeof prod.stock === 'number') {
+          const newStock = Math.max(0, prod.stock - item.qty);
+          await sb.from('products').update({ stock: newStock }).eq('id', item.id);
+        }
+      } catch(e) { console.error('stock update failed for', item.id, e); }
+    }
 
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
     window.open(url, '_blank');

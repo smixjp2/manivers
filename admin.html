@@ -658,27 +658,60 @@
   </div>
 
   <div id="adminPanel" style="display:none;">
-    <div class="admin-toolbar">
-      <div>
-        <h2 style="font-family:'Space Grotesk', sans-serif; font-size:22px;">Produits</h2>
-        <p style="font-size:13px; color:var(--muted); margin-top:4px;" id="productCount">·</p>
-      </div>
-      <button class="admin-add-btn" onclick="openProductModal()">+ Ajouter un produit</button>
+    <div style="display:flex; gap:10px; margin-bottom:24px; border-bottom:1px solid var(--line);">
+      <button class="admin-tab-btn active" id="tabBtnProducts" onclick="switchAdminTab('products')" style="background:none; border:none; padding:12px 4px; margin-right:20px; font-weight:600; font-size:14.5px; cursor:pointer; border-bottom:2px solid var(--ink); color:var(--ink);">Produits</button>
+      <button class="admin-tab-btn" id="tabBtnOrders" onclick="switchAdminTab('orders')" style="background:none; border:none; padding:12px 4px; font-weight:600; font-size:14.5px; cursor:pointer; border-bottom:2px solid transparent; color:var(--muted);">Commandes</button>
     </div>
-    <div style="overflow-x:auto;">
-      <table class="admin-table">
-        <thead>
-          <tr>
-            <th>Produit</th>
-            <th>Etat</th>
-            <th>Categorie</th>
-            <th>Prix</th>
-            <th>Statut</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody id="productsTableBody"></tbody>
-      </table>
+
+    <div id="productsTab">
+      <div class="admin-toolbar">
+        <div>
+          <h2 style="font-family:'Space Grotesk', sans-serif; font-size:22px;">Produits</h2>
+          <p style="font-size:13px; color:var(--muted); margin-top:4px;" id="productCount">·</p>
+        </div>
+        <button class="admin-add-btn" onclick="openProductModal()">+ Ajouter un produit</button>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Produit</th>
+              <th>Etat</th>
+              <th>Categorie</th>
+              <th>Prix</th>
+              <th>Stock</th>
+              <th>Statut</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="productsTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="ordersTab" style="display:none;">
+      <div class="admin-toolbar">
+        <div>
+          <h2 style="font-family:'Space Grotesk', sans-serif; font-size:22px;">Commandes</h2>
+          <p style="font-size:13px; color:var(--muted); margin-top:4px;" id="orderCount">·</p>
+        </div>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Client</th>
+              <th>Contact</th>
+              <th>Produits</th>
+              <th>Total</th>
+              <th>Statut</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="ordersTableBody"></tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>
@@ -741,6 +774,10 @@
       <input type="text" id="prodBadge" placeholder="-20%">
     </div>
   </div>
+  <div class="admin-field">
+    <label>Stock disponible</label>
+    <input type="number" id="prodStock" placeholder="10" min="0">
+  </div>
   <div class="admin-checkbox-row">
     <label><input type="checkbox" id="prodActive" checked> Actif (visible sur le site)</label>
     <label><input type="checkbox" id="prodFeatured"> Mis en avant (accueil)</label>
@@ -791,6 +828,55 @@
     loadProducts();
   }
 
+  function switchAdminTab(tab){
+    const isProducts = tab === 'products';
+    document.getElementById('productsTab').style.display = isProducts ? 'block' : 'none';
+    document.getElementById('ordersTab').style.display = isProducts ? 'none' : 'block';
+    document.getElementById('tabBtnProducts').style.borderBottomColor = isProducts ? '#15161A' : 'transparent';
+    document.getElementById('tabBtnProducts').style.color = isProducts ? '#15161A' : 'var(--muted)';
+    document.getElementById('tabBtnOrders').style.borderBottomColor = isProducts ? 'transparent' : '#15161A';
+    document.getElementById('tabBtnOrders').style.color = isProducts ? 'var(--muted)' : '#15161A';
+    if (!isProducts) loadOrders();
+  }
+
+  let allOrders = [];
+
+  async function loadOrders(){
+    const { data, error } = await sb.from('orders').select('*').order('created_at', { ascending: false });
+    if (error) { console.error(error); return; }
+    allOrders = data || [];
+    renderOrders();
+  }
+
+  function renderOrders(){
+    const tbody = document.getElementById('ordersTableBody');
+    document.getElementById('orderCount').textContent = allOrders.length + ' commande' + (allOrders.length > 1 ? 's' : '');
+    tbody.innerHTML = allOrders.map(o => {
+      const date = new Date(o.created_at).toLocaleDateString('fr-FR', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' });
+      const isNew = o.status === 'nouvelle' || !o.status;
+      return `
+        <tr>
+          <td style="font-size:12.5px; color:var(--muted); white-space:nowrap;">${date}</td>
+          <td><b>${o.nom}</b><br><span style="font-size:12px; color:var(--muted);">${o.ville}</span></td>
+          <td style="font-size:12.5px;">${o.telephone}${o.email ? '<br>' + o.email : ''}</td>
+          <td style="font-size:12.5px; max-width:220px;">${o.produits}</td>
+          <td><b>${o.total} DH</b></td>
+          <td><span class="admin-chip ${isNew ? '' : 'inactive'}">${isNew ? 'Nouvelle' : 'Traitee'}</span></td>
+          <td>
+            <div class="admin-actions">
+              ${isNew ? `<button class="admin-edit-link" onclick="markOrderProcessed('${o.id}')">Marquer traitee</button>` : ''}
+            </div>
+          </td>
+        </tr>`;
+    }).join('');
+  }
+
+  async function markOrderProcessed(id){
+    const { error } = await sb.from('orders').update({ status: 'traitee' }).eq('id', id);
+    if (error) { alert('Erreur: ' + error.message); return; }
+    loadOrders();
+  }
+
   async function loadProducts(){
     const { data, error } = await sb.from('products').select('*').order('sort_order', { ascending: true });
     if (error) { console.error(error); return; }
@@ -812,6 +898,7 @@
         <td><span class="admin-chip ${p.condition === 'occasion' ? 'inactive' : ''}">${p.condition === 'occasion' ? 'Occasion' : 'Neuf'}</span></td>
         <td>${catLabels[p.category] || p.category}</td>
         <td>${p.price} DH${p.old_price ? '<span class="admin-price-old">' + p.old_price + ' DH</span>' : ''}</td>
+        <td><span style="font-weight:600; ${(p.stock === 0) ? 'color:#B3261E;' : (p.stock <= 3 ? 'color:#B8763F;' : '')}">${p.stock ?? 0}</span>${p.stock === 0 ? ' <span class="admin-chip inactive">Epuise</span>' : (p.stock <= 3 ? ' <span class="admin-chip" style="background:#F1E4D6; color:#B8763F;">Bas</span>' : '')}</td>
         <td><span class="admin-chip ${p.active ? '' : 'inactive'}">${p.active ? 'Actif' : 'Masque'}</span></td>
         <td>
           <div class="admin-actions">
@@ -832,6 +919,7 @@
     document.getElementById('prodOldPrice').value = '';
     document.getElementById('prodCategory').value = 'soin';
     document.getElementById('prodBadge').value = '';
+    document.getElementById('prodStock').value = '10';
     document.getElementById('prodCondition').value = 'neuf';
     document.getElementById('prodActive').checked = true;
     document.getElementById('prodFeatured').checked = false;
@@ -868,6 +956,7 @@
     document.getElementById('prodOldPrice').value = p.old_price || '';
     document.getElementById('prodCategory').value = p.category;
     document.getElementById('prodBadge').value = p.badge || '';
+    document.getElementById('prodStock').value = (p.stock !== null && p.stock !== undefined) ? p.stock : '10';
     document.getElementById('prodCondition').value = p.condition || 'neuf';
     document.getElementById('prodActive').checked = p.active;
     document.getElementById('prodFeatured').checked = p.featured;
@@ -893,6 +982,7 @@
     const category = document.getElementById('prodCategory').value;
     const badge = document.getElementById('prodBadge').value.trim() || null;
     const condition = document.getElementById('prodCondition').value;
+    const stock = parseInt(document.getElementById('prodStock').value) || 0;
     const active = document.getElementById('prodActive').checked;
     const featured = document.getElementById('prodFeatured').checked;
 
@@ -914,12 +1004,12 @@
 
     if (id) {
       const { error } = await sb.from('products').update({
-        name, description, price, old_price, category, badge, condition, active, featured, image_url
+        name, description, price, old_price, category, badge, condition, stock, active, featured, image_url
       }).eq('id', id);
       if (error) { alert('Erreur: ' + error.message); return; }
     } else {
       const { error } = await sb.from('products').insert({
-        id: productId, name, description, price, old_price, category, badge, condition, active, featured, image_url,
+        id: productId, name, description, price, old_price, category, badge, condition, stock, active, featured, image_url,
         sort_order: allProducts.length + 1
       });
       if (error) { alert('Erreur: ' + error.message); return; }

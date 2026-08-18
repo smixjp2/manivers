@@ -812,7 +812,7 @@
     document.getElementById('checkoutOverlay').classList.remove('open');
     document.getElementById('checkoutModal').classList.remove('open');
   }
-  function submitCheckoutForm(){
+  async function submitCheckoutForm(){
     const name = document.getElementById('checkoutName').value.trim();
     const email = document.getElementById('checkoutEmail').value.trim();
     const phone = document.getElementById('checkoutPhone').value.trim();
@@ -845,6 +845,23 @@
       produits: produitsText, total: cartTotal()
     });
     fetch(GOOGLE_SHEET_URL + '?' + sheetParams.toString(), { mode: 'no-cors' }).catch(() => {});
+
+    try {
+      await sb.from('orders').insert({
+        nom: name, email: email || null, telephone: phone, ville: city, adresse: address,
+        produits: produitsText, total: cartTotal()
+      });
+    } catch(e) { console.error('orders insert failed', e); }
+
+    for (const item of cart) {
+      try {
+        const { data: prod } = await sb.from('products').select('stock').eq('id', item.id).single();
+        if (prod && typeof prod.stock === 'number') {
+          const newStock = Math.max(0, prod.stock - item.qty);
+          await sb.from('products').update({ stock: newStock }).eq('id', item.id);
+        }
+      } catch(e) { console.error('stock update failed for', item.id, e); }
+    }
 
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
     window.open(url, '_blank');
@@ -1271,13 +1288,14 @@
       : `<svg viewBox="0 0 24 24">${icon}</svg>`;
     const isOccasion = p.condition === 'occasion';
     const isWished = getWishlist().some(w => w.id === p.id);
+    const outOfStock = p.stock === 0;
 
     content.innerHTML = `
       <div class="pd-grid">
         <div class="pd-media">
           ${media}
-          ${p.badge ? `<span class="pd-badge">${escapeHtml(p.badge)}</span>` : ''}
-          ${isOccasion ? `<span class="pd-condition">Occasion</span>` : ''}
+          ${p.badge && !outOfStock ? `<span class="pd-badge">${escapeHtml(p.badge)}</span>` : ''}
+          ${outOfStock ? `<span class="pd-condition" style="background:#B3261E;">Rupture de stock</span>` : (isOccasion ? `<span class="pd-condition">Occasion</span>` : '')}
           <button class="pd-wishlist ${isWished ? 'active' : ''}" id="pdWishlistBtn" onclick="togglePdWishlist('${p.id}', '${escapeAttr(p.name)}', ${p.price})">
             <svg viewBox="0 0 24 24"><path d="M12 21s-8-4.6-8-11a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6.4-8 11-8 11z"/></svg>
           </button>
@@ -1290,7 +1308,7 @@
             ${p.old_price ? `<span class="pd-price-old">${p.old_price} DH</span>` : ''}
           </div>
           <p class="pd-desc">${escapeHtml(p.description || "Aucune description disponible pour ce produit.")}</p>
-          <button class="pd-add-btn" onclick="addToCart('${p.id}', '${escapeAttr(p.name)}', ${p.price}, this)">Ajouter au panier</button>
+          <button class="pd-add-btn" ${outOfStock ? 'disabled' : ''} onclick="${outOfStock ? '' : `addToCart('${p.id}', '${escapeAttr(p.name)}', ${p.price}, this)`}">${outOfStock ? 'Rupture de stock' : 'Ajouter au panier'}</button>
           <p class="pd-note">Paiement a la livraison · Livraison partout au Maroc</p>
         </div>
       </div>
