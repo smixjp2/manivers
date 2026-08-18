@@ -1,27 +1,8 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-SN08P7MQRL"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-SN08P7MQRL');
-</script>
-
-<title>Boutique · MANIVERS</title>
-<meta property="og:type" content="website">
-<meta property="og:title" content="Boutique · MANIVERS">
-<meta property="og:description" content="Toute la sélection Manivers : soin, montres, gadgets, sport, auto et voyage. Paiement à la livraison.">
-<meta property="og:image" content="https://manivers.vercel.app/og-image.png">
-<meta property="og:url" content="https://manivers.vercel.app/boutique.html">
-<meta property="og:locale" content="fr_MA">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Boutique · MANIVERS">
-<meta name="twitter:description" content="Toute la sélection Manivers : soin, montres, gadgets, sport, auto et voyage. Paiement à la livraison.">
-<meta name="twitter:image" content="https://manivers.vercel.app/og-image.png">
-<meta name="description" content="Toute la sélection Manivers : soin, montres, gadgets, sport, auto et voyage. Livraison partout au Maroc, paiement à la livraison.">
+<title>Produit · MANIVERS</title>
+<meta name="description" content="Detail produit Manivers.">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/png" href="favicon.png">
@@ -232,37 +213,6 @@
   }
   .filter-tab:hover{ border-color:var(--copper); }
   .filter-tab.active{ background:var(--ink); color:#fff; border-color:var(--ink); }
-  .filter-tab{ display:inline-flex; align-items:center; gap:6px; }
-  .filter-count{ font-size:11px; opacity:0.65; }
-  .shop-toolbar{
-    position:sticky; top:78px; z-index:30; background:var(--paper); padding:14px 0 18px;
-    border-bottom:1px solid var(--line); margin-bottom:28px;
-  }
-  .shop-toolbar-inner{ display:flex; align-items:flex-start; justify-content:space-between; gap:16px; flex-wrap:wrap; }
-  .shop-right{ display:flex; align-items:center; gap:14px; flex-shrink:0; padding-top:11px; }
-  .results-count{ font-size:13px; color:var(--muted); white-space:nowrap; }
-  .sort-select{
-    font-family:inherit; font-size:13px; font-weight:600; color:var(--ink);
-    background:var(--card); border:1px solid var(--line); border-radius:100px;
-    padding:9px 32px 9px 16px; cursor:pointer; appearance:none;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236B6E75' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-    background-repeat:no-repeat; background-position:right 12px center; background-size:14px;
-  }
-  .prod-cat-chip{
-    position:absolute; bottom:11px; left:11px; background:rgba(255,255,255,0.92); color:var(--muted);
-    font-size:10px; font-weight:600; padding:4px 9px; border-radius:100px; letter-spacing:0.02em;
-  }
-  .prod-condition-chip{
-    position:absolute; top:11px; right:52px; background:#3E4148; color:#fff;
-    font-size:10px; font-weight:700; padding:4px 9px; border-radius:100px; letter-spacing:0.02em;
-  }
-  .condition-filter{ display:flex; gap:8px; margin-top:12px; }
-  .condition-tab{
-    background:var(--card); border:1px solid var(--line); padding:8px 16px; border-radius:100px;
-    font-size:12.5px; font-weight:600; cursor:pointer; transition:all .2s; color:var(--ink);
-  }
-  .condition-tab:hover{ border-color:var(--copper); }
-  .condition-tab.active{ background:#3E4148; color:#fff; border-color:#3E4148; }
   .page-head{ padding:44px 0 12px; }
   .page-head h1{ font-size:36px; }
   .page-head p{ color:var(--muted); margin-top:10px; font-size:15.5px; }
@@ -623,10 +573,38 @@
 </style>
 
 </head>
+
+<style>
+  .pd-wrap{ max-width:1100px; margin:0 auto; padding:32px 24px 80px; }
+  .pd-breadcrumb{ font-size:13px; color:var(--muted); margin-bottom:24px; }
+  .pd-breadcrumb a{ color:var(--muted); }
+  .pd-breadcrumb a:hover{ color:var(--copper); }
+  .pd-grid{ display:grid; grid-template-columns:1fr; gap:36px; }
+  @media (min-width:800px){ .pd-grid{ grid-template-columns:1fr 1fr; } }
+  .pd-media{ position:relative; background:linear-gradient(135deg, var(--copper-dim), var(--card)); border-radius:20px; aspect-ratio:1/1; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+  .pd-media img{ width:100%; height:100%; object-fit:cover; }
+  .pd-media svg{ width:35%; height:35%; stroke:var(--copper); fill:none; stroke-width:1.2; opacity:0.7; }
+  .pd-badge{ position:absolute; top:16px; left:16px; background:var(--ink); color:#fff; font-size:12px; font-weight:700; padding:6px 13px; border-radius:100px; }
+  .pd-condition{ position:absolute; top:16px; right:16px; background:#3E4148; color:#fff; font-size:12px; font-weight:700; padding:6px 13px; border-radius:100px; }
+  .pd-wishlist{ position:absolute; bottom:16px; right:16px; width:44px; height:44px; border-radius:100px; background:rgba(255,255,255,0.9); border:none; display:flex; align-items:center; justify-content:center; cursor:pointer; }
+  .pd-wishlist svg{ width:20px; height:20px; stroke:var(--ink); fill:none; stroke-width:1.6; }
+  .pd-wishlist.active svg{ fill:var(--copper); stroke:var(--copper); }
+  .pd-cat{ font-size:12.5px; color:var(--copper); font-weight:600; text-transform:uppercase; letter-spacing:0.03em; margin-bottom:10px; }
+  .pd-title{ font-family:'Fraunces', serif; font-weight:600; font-size:30px; line-height:1.2; margin-bottom:16px; }
+  .pd-price-row{ display:flex; align-items:baseline; gap:12px; margin-bottom:22px; }
+  .pd-price-now{ font-family:'Fraunces', serif; font-weight:600; font-size:28px; }
+  .pd-price-old{ font-size:16px; color:var(--muted); text-decoration:line-through; }
+  .pd-desc{ font-size:15px; color:#3E4148; line-height:1.75; margin-bottom:28px; }
+  .pd-add-btn{ width:100%; background:var(--ink); color:#fff; border:none; padding:16px; border-radius:100px; font-weight:600; font-size:15px; cursor:pointer; margin-bottom:12px; }
+  .pd-add-btn:disabled{ opacity:0.5; }
+  .pd-note{ font-size:12.5px; color:var(--muted); text-align:center; }
+  .pd-not-found{ text-align:center; padding:80px 20px; }
+  .pd-not-found h2{ font-family:'Fraunces', serif; font-size:22px; margin-bottom:10px; }
+</style>
+
+</head>
 <body>
 <div class="offline-banner" id="offlineBanner">Pas de connexion internet · certaines actions ne fonctionneront pas.</div>
-
-<div class="topbar">Livraison partout au Maroc via <b>Cathedis</b> · Paiement à la livraison</div>
 
 <nav>
   <div class="wrap nav-inner">
@@ -660,47 +638,10 @@
   </div>
 </nav>
 
-
-<section id="categories" class="page-head">
-  <div class="wrap">
-    <div class="breadcrumb"><a href="index.html">Accueil</a> / Boutique</div>
-    <h1>La boutique Manivers</h1>
-    <p>Toutes nos références, organisées par univers. Filtre par catégorie ou parcours tout.</p>
-  </div>
-</section>
-
-<section id="produits" style="padding-top:8px;">
-  <div class="wrap">
-    <div class="shop-toolbar">
-      <div class="shop-toolbar-inner">
-        <div class="filter-tabs">
-          <button class="filter-tab active" data-filter="all">Tout <span class="filter-count">(12)</span></button>
-          <button class="filter-tab" data-filter="soin">Soin & Grooming <span class="filter-count">(2)</span></button>
-          <button class="filter-tab" data-filter="montres">Montres & Accessoires <span class="filter-count">(2)</span></button>
-          <button class="filter-tab" data-filter="gadgets">Gadgets & Bureau <span class="filter-count">(2)</span></button>
-          <button class="filter-tab" data-filter="sport">Sport & Performance <span class="filter-count">(2)</span></button>
-          <button class="filter-tab" data-filter="auto">Auto & Outils <span class="filter-count">(2)</span></button>
-          <button class="filter-tab" data-filter="voyage">Voyage & Mobilité <span class="filter-count">(2)</span></button>
-        </div>
-        <div class="shop-right">
-          <span class="results-count" id="resultsCount">12 produits</span>
-          <select class="sort-select" id="sortSelect" onchange="sortProducts(this.value)">
-            <option value="default">Trier : Pertinence</option>
-            <option value="price-asc">Prix croissant</option>
-            <option value="price-desc">Prix décroissant</option>
-            <option value="discount">Meilleures réductions</option>
-          </select>
-        </div>
-      </div>
-      <div class="condition-filter" id="conditionFilter">
-        <button class="condition-tab active" data-condition-filter="all">Tout</button>
-        <button class="condition-tab" data-condition-filter="neuf">Neuf</button>
-        <button class="condition-tab" data-condition-filter="occasion">Occasion</button>
-      </div>
-    </div>
-    <div class="prod-grid" id="prodGrid"></div>
-  </div>
-</section>
+<div class="pd-wrap" id="pdWrap">
+  <div class="pd-breadcrumb"><a href="index.html">Accueil</a> / <a href="boutique.html">Boutique</a> / <span id="pdBreadcrumbName">...</span></div>
+  <div id="pdContent">Chargement...</div>
+</div>
 
 <footer>
   <div class="wrap">
@@ -736,79 +677,6 @@
     </div>
   </div>
 </footer>
-
-<script>
-  const tabs = document.querySelectorAll('.filter-tab');
-  function getCards(){ return document.querySelectorAll('#prodGrid .prod-card'); }
-  const prodGrid = document.getElementById('prodGrid');
-  const resultsCount = document.getElementById('resultsCount');
-
-  function updateResultsCount(){
-    const visible = Array.from(getCards()).filter(c => c.style.display !== 'none').length;
-    resultsCount.textContent = visible + (visible > 1 ? ' produits' : ' produit');
-  }
-
-  let currentCategoryFilter = 'all';
-  let currentConditionFilter = 'all';
-
-  function applyFilters(){
-    getCards().forEach(card => {
-      const cat = card.getAttribute('data-cat');
-      const cond = card.getAttribute('data-condition');
-      const catMatch = currentCategoryFilter === 'all' || cat === currentCategoryFilter;
-      const condMatch = currentConditionFilter === 'all' || cond === currentConditionFilter;
-      card.style.display = (catMatch && condMatch) ? '' : 'none';
-    });
-    updateResultsCount();
-  }
-
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      tabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      currentCategoryFilter = tab.getAttribute('data-filter');
-      applyFilters();
-    });
-  });
-
-  document.querySelectorAll('.condition-tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      document.querySelectorAll('.condition-tab').forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      currentConditionFilter = tab.getAttribute('data-condition-filter');
-      applyFilters();
-    });
-  });
-
-  function getPrice(card){
-    const now = card.querySelector('.prod-price .now');
-    return now ? parseInt(now.textContent.replace(/\D/g,'')) : 0;
-  }
-  function getDiscount(card){
-    const badge = card.querySelector('.prod-badge');
-    return badge ? parseInt(badge.textContent.replace(/\D/g,'')) : 0;
-  }
-  function sortProducts(mode){
-    const arr = Array.from(getCards());
-    if (mode === 'price-asc') arr.sort((a,b) => getPrice(a) - getPrice(b));
-    else if (mode === 'price-desc') arr.sort((a,b) => getPrice(b) - getPrice(a));
-    else if (mode === 'discount') arr.sort((a,b) => getDiscount(b) - getDiscount(a));
-    else arr.sort((a,b) => (a.dataset.order||0) - (b.dataset.order||0));
-    arr.forEach(card => prodGrid.appendChild(card));
-  }
-  getCards().forEach((card, i) => card.dataset.order = i);
-
-  // Auto-select filter if URL has a category hash (e.g. boutique.html#montres)
-  window.addEventListener('DOMContentLoaded', () => {
-    updateResultsCount();
-    const hash = window.location.hash.replace('#', '');
-    const validCats = ['soin','montres','gadgets','sport','auto','voyage'];
-    if (validCats.includes(hash)) {
-      const target = document.querySelector(`.filter-tab[data-filter="${hash}"]`);
-      if (target) target.click();
-    }
-  });
-</script>
 
 
 <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
@@ -1362,70 +1230,75 @@
     auto: '<rect x="3" y="9" width="14" height="8" rx="1"/><path d="M17 12h4l2 3v2h-6"/><circle cx="7.5" cy="19" r="1.6"/><circle cx="17.5" cy="19" r="1.6"/>',
     voyage: '<rect x="5" y="7" width="14" height="14" rx="2"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/>'
   };
-  const catLabelsShort = { soin:"Soin", montres:"Montres", gadgets:"Gadgets", sport:"Sport", auto:"Auto", voyage:"Voyage" };
+  const catLabelsFull = {
+    soin:"Soin & Grooming", montres:"Montres & Accessoires", gadgets:"Gadgets & Bureau",
+    sport:"Sport & Performance", auto:"Auto & Outils", voyage:"Voyage & Mobilite"
+  };
 
-  function escapeAttr(str){
-    return String(str).replace(/'/g, "\\'").replace(/"/g, '&quot;');
+  function escapeHtml(str){
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
   }
 
-  function renderProductCard(p){
-    const icon = catIcons[p.category] || catIcons.soin;
-    const chip = catLabelsShort[p.category] || p.category;
-    const safeName = escapeAttr(p.name);
-    const isOccasion = p.condition === 'occasion';
-    const media = p.image_url
-      ? `<img src="${p.image_url}" alt="${safeName}" style="width:100%; height:100%; object-fit:cover;">`
-      : `<svg viewBox="0 0 24 24">${icon}</svg>`;
-    return `
-      <div class="prod-card" data-cat="${p.category}" data-condition="${p.condition || 'neuf'}" onclick="window.location.href='produit.html?id=${p.id}'" style="cursor:pointer;">
-        <div class="prod-img"><button class="wishlist-btn" data-id="${p.id}" onclick="event.stopPropagation(); toggleWishlist('${p.id}', '${safeName}', ${p.price}, this)"><svg viewBox="0 0 24 24"><path d="M12 21s-8-4.6-8-11a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6.4-8 11-8 11z"/></svg></button>
-          ${p.badge ? `<span class="prod-badge">${p.badge}</span>` : ''}
-          ${isOccasion ? `<span class="prod-condition-chip">Occasion</span>` : ''}
-          ${media}
-        <span class="prod-cat-chip">${chip}</span></div>
-        <div class="prod-body">
-          <b>${p.name}</b>
-          <div class="prod-price"><span class="now">${p.price} DH</span>${p.old_price ? `<span class="old">${p.old_price} DH</span>` : ''}</div>
-          <button class="add-to-cart" onclick="event.stopPropagation(); addToCart('${p.id}', '${safeName}', ${p.price}, this)">Ajouter au panier</button>
-        </div>
-      </div>`;
-  }
+  async function loadProductDetail(){
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+    const content = document.getElementById('pdContent');
 
-  async function loadStoreProducts(){
-    const grid = document.getElementById('prodGrid');
-    if (!grid) return;
-    const { data, error } = await sb.from('products').select('*').eq('active', true).order('sort_order', { ascending: true });
-    if (error || !data) {
-      grid.innerHTML = '<p style="grid-column:1/-1; text-align:center; color:var(--muted); padding:40px 0;">Impossible de charger les produits pour le moment.</p>';
+    if (!id) {
+      content.innerHTML = `<div class="pd-not-found"><h2>Produit introuvable</h2><p style="color:var(--muted); margin-bottom:20px;">Aucun identifiant de produit fourni.</p><a href="boutique.html" class="pd-add-btn" style="display:inline-block; text-decoration:none; text-align:center;">Retour a la boutique</a></div>`;
       return;
     }
-    grid.innerHTML = data.map(renderProductCard).join('');
-    getCards().forEach((card, i) => card.dataset.order = i);
-    updateCategoryCounts(data);
-    updateWishlistUI();
-    const hash = window.location.hash.replace('#', '');
-    const validCats = ['soin','montres','gadgets','sport','auto','voyage'];
-    if (validCats.includes(hash)) {
-      const target = document.querySelector(`.filter-tab[data-filter="${hash}"]`);
-      if (target) target.click();
-    } else {
-      applyFilters();
+
+    const { data: p, error } = await sb.from('products').select('*').eq('id', id).single();
+
+    if (error || !p) {
+      content.innerHTML = `<div class="pd-not-found"><h2>Produit introuvable</h2><p style="color:var(--muted); margin-bottom:20px;">Ce produit n'existe plus ou a ete retire.</p><a href="boutique.html" class="pd-add-btn" style="display:inline-block; text-decoration:none; text-align:center;">Retour a la boutique</a></div>`;
+      return;
     }
+
+    document.title = p.name + ' · MANIVERS';
+    document.getElementById('pdBreadcrumbName').textContent = p.name;
+
+    const icon = catIcons[p.category] || catIcons.soin;
+    const media = p.image_url
+      ? `<img src="${p.image_url}" alt="${escapeHtml(p.name)}">`
+      : `<svg viewBox="0 0 24 24">${icon}</svg>`;
+    const isOccasion = p.condition === 'occasion';
+    const isWished = getWishlist().some(w => w.id === p.id);
+
+    content.innerHTML = `
+      <div class="pd-grid">
+        <div class="pd-media">
+          ${media}
+          ${p.badge ? `<span class="pd-badge">${escapeHtml(p.badge)}</span>` : ''}
+          ${isOccasion ? `<span class="pd-condition">Occasion</span>` : ''}
+          <button class="pd-wishlist ${isWished ? 'active' : ''}" id="pdWishlistBtn" onclick="togglePdWishlist('${p.id}', '${escapeHtml(p.name)}', ${p.price})">
+            <svg viewBox="0 0 24 24"><path d="M12 21s-8-4.6-8-11a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6.4-8 11-8 11z"/></svg>
+          </button>
+        </div>
+        <div>
+          <div class="pd-cat">${catLabelsFull[p.category] || p.category}</div>
+          <h1 class="pd-title">${escapeHtml(p.name)}</h1>
+          <div class="pd-price-row">
+            <span class="pd-price-now">${p.price} DH</span>
+            ${p.old_price ? `<span class="pd-price-old">${p.old_price} DH</span>` : ''}
+          </div>
+          <p class="pd-desc">${escapeHtml(p.description || "Aucune description disponible pour ce produit.")}</p>
+          <button class="pd-add-btn" onclick="addToCart('${p.id}', '${escapeHtml(p.name)}', ${p.price}, this)">Ajouter au panier</button>
+          <p class="pd-note">Paiement a la livraison · Livraison partout au Maroc</p>
+        </div>
+      </div>
+    `;
+    if (typeof updateWishlistUI === 'function') updateWishlistUI();
   }
 
-  function updateCategoryCounts(products){
-    const counts = {};
-    products.forEach(p => { counts[p.category] = (counts[p.category] || 0) + 1; });
-    document.querySelectorAll('.filter-tab').forEach(tab => {
-      const cat = tab.getAttribute('data-filter');
-      const countEl = tab.querySelector('.filter-count');
-      if (!countEl) return;
-      if (cat === 'all') countEl.textContent = `(${products.length})`;
-      else countEl.textContent = `(${counts[cat] || 0})`;
-    });
+  function togglePdWishlist(id, name, price){
+    toggleWishlist(id, name, price, document.getElementById('pdWishlistBtn'));
   }
 
-  document.addEventListener('DOMContentLoaded', loadStoreProducts);
+  document.addEventListener('DOMContentLoaded', loadProductDetail);
 </script>
 
 </body>

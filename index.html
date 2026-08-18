@@ -1359,7 +1359,7 @@
       ? `<img src="${p.image_url}" alt="${safeName}" style="width:100%; height:100%; object-fit:cover;">`
       : `<svg viewBox="0 0 24 24">${icon}</svg>`;
     return `
-      <div class="prod-card">
+      <div class="prod-card" onclick="window.location.href='produit.html?id=${p.id}'" style="cursor:pointer;">
         <div class="prod-img"><button class="wishlist-btn" data-id="${p.id}" onclick="event.stopPropagation(); toggleWishlist('${p.id}', '${safeName}', ${p.price}, this)"><svg viewBox="0 0 24 24"><path d="M12 21s-8-4.6-8-11a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6.4-8 11-8 11z"/></svg></button>
           ${p.badge ? `<span class="prod-badge">${p.badge}</span>` : ''}
           ${isOccasion ? `<span class="prod-condition-chip">Occasion</span>` : ''}
@@ -1368,7 +1368,7 @@
         <div class="prod-body">
           <b>${p.name}</b>
           <div class="prod-price"><span class="now">${p.price} DH</span>${p.old_price ? `<span class="old">${p.old_price} DH</span>` : ''}</div>
-          <button class="add-to-cart" onclick="addToCart('${p.id}', '${safeName}', ${p.price}, this)">Ajouter au panier</button>
+          <button class="add-to-cart" onclick="event.stopPropagation(); addToCart('${p.id}', '${safeName}', ${p.price}, this)">Ajouter au panier</button>
         </div>
       </div>`;
   }
